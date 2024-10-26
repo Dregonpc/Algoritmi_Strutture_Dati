@@ -1,0 +1,15 @@
+# General
+*.csv
+*.log
+
+# Directories
+**/build
+**/out
+.vscode
+
+# Generated files
+bin/**
+
+# Project based files
+build/
+bin/
