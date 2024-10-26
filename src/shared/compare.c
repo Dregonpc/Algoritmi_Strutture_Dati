@@ -40,3 +40,67 @@ int compare_string(const void *a, const void *b) {
 
     return strcmp(first, second);
 }
+
+int compare_int(const void *a, const void *b) {
+    int ret;
+    if(is_null(a, b, &ret))
+        return ret;
+    
+    int first = *(int*)a;
+    int second = *(int*)b;
+
+    if(first > second)
+        return 1;
+    if(first < second)
+        return -1;
+    
+    return 0;
+}
+
+int compare_long(const void *a, const void *b) {
+    int ret;
+    if(is_null(a, b, &ret))
+        return ret;
+    
+    long first = *(long*)a;
+    long second = *(long*)b;
+
+    if(first > second)
+        return 1;
+    if(first < second)
+        return -1;
+    
+    return 0;
+}
+
+int compare_float(const void *a, const void *b) {
+    int ret;
+    if(is_null(a, b, &ret))
+        return ret;
+    
+    float first = *(float*)a;
+    float second = *(float*)b;
+
+    if(first > second)
+        return 1;
+    if(first < second)
+        return -1;
+    
+    return 0;
+}
+
+int compare_double(const void *a, const void *b) {
+    int ret;
+    if(is_null(a, b, &ret))
+        return ret;
+    
+    double first = *(double*)a;
+    double second = *(double*)b;
+
+    if(first > second)
+        return 1;
+    if(first < second)
+        return -1;
+    
+    return 0;
+}
