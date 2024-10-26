@@ -1,6 +1,7 @@
 # General
 *.csv
 *.log
+*.o
 
 # Directories
 **/build
