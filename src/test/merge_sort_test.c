@@ -1,4 +1,4 @@
-#include "../ex1/merge_sort.h"
+#include "../main/ex1/merge_sort.h"
 #include "Unity/unity.h"
 
 void test_null_array(void) {

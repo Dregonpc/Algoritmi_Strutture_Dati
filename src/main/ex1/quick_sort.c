@@ -1,7 +1,7 @@
 #include "quick_sort.h"
 
 void swap(void *a, void *b) {
-
+    
 }
 
 int partition(void *base, size_t size, size_t left, size_t right, int (*compar)(const void*, const void*)) {
@@ -21,7 +21,12 @@ int partition(void *base, size_t size, size_t left, size_t right, int (*compar)(
 }
 
 void quick_sort_rec(void *base, size_t nitems, size_t size, size_t left, size_t right, int (*compar)(const void*, const void*)) {
-    
+    if (left < right) {
+        int pivot = partition(base, size, left, right, compar);
+
+        quick_sort_rec(base, nitems, size, left, pivot - 1, compar);
+        quick_sort_rec(base, nitems, size, pivot + 1, right, compar);
+    }
 }
 
 void quick_sort(void *base, size_t nitems, size_t size, int (*compar)(const void*, const void*)) {
