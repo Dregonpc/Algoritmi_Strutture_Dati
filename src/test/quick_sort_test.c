@@ -14,7 +14,7 @@ void test_empty_array(void) {
     quick_sort(test, 0, 0, compare_int);
     TEST_ASSERT_EQUAL_INT_ARRAY(expected. test, 0);
 }
-//TO ADD:  5, 7, 222, 69, 152, 468, 874, 52
+
 void test_positive_int_array() {
     int test[] = {14, 2, 97, 54, 11, 17, 34, 28, 55, 1, 22, 84, 5, 7, 222, 69, 152, 468, 874, 52};
     int expected[] = {1, 2, 5, 7, 11, 14, 17, 22, 28, 34, 52, 54, 55, 69, 84, 97, 152, 222, 468, 874};
@@ -35,14 +35,14 @@ void test_int_array(void) {
     merge_sort(test, 20, sizeof(test[0]), compare_int);
     TEST_ASSERT_EQUAL_INT_ARRAY(expected, test, 20);
 }
-// TO ADD: 8.65f, 2.03f, 4.22f, 0.25f, 1.47f, 6.51f, 9.75f, 1.05f, 4.71f, 7.30f  
+
 void test_float_array(void) {
     float test[] = {1.52f, 0.14f, 5.26f, 5.27f, 0.01f, 3.68f, 2.42f, 7.29f, 6.33f, 2.56f, 8.65f, 2.03f, 4.22f, 0.25f, 1.47f, 6.51f, 9.75f, 1.05f, 4.71f, 7.30f};
     float expected[] = {0.01f, 0.14f, 0.25f, 1.05f, 1.47f, 1.52f, 2.03f, 2.42f, 2.56f, 3.68f, 4.22f, 4.71f, 5.26f, 5.27f, 6.33f, 6.51f, 7.29f, 7.30f, 8.65f, 9.75f};
     merge_sort(test, 20, sizeof(test[0]), compare_float);
     TEST_ASSERT_EQUAL_FLOAT_ARRAY(expected, test, 20);
 }
-// TO ADD: 1.4876, 1.9967, 9.5672, 6.1804, 7.8912, 0.3721, 1.3462, 0.8743, 5.2198, 0.0024
+
 void test_double_array(void) {
     double test[] = {2.1689, 1.3514, 0.0000, 3.7536, 0.1579, 1.2477, 2.2222, 4.2874, 1.9863, 5.2478, 1.4876, 1.9967, 9.5672, 6.1804, 7.8912, 0.3721, 1.3462, 0.8743, 5.2198, 0.0024};
     double expected[] = {0.0000, 0.0024, 0.1579, 0.3721, 0.8743, 1.2477, 1.3462, 1.3514, 1.4876, 1.9863, 1.9967, 2.1689, 2.2222, 3.7536, 4.2874, 5.2198, 5.2478, 6.1804, 7.8912, 9.5672};
@@ -56,7 +56,7 @@ void test_char_array(void) {
     merge_sort(test, 20, sizeof(test[0]), compare_char);
     TEST_ASSERT_EQUAL_INT8_ARRAY(expected, test, 20);
 }
-// "cg", "gc", "dr", "ae", "fm", "il", "hi", "bf", "eq", "la", "su", "me", "ca", "lo", "ag", "gh", "ta", "ma", "to", "ro", "du"
+
 void test_string_array(void) {
     char test[] = {"cg\0", "gc\0", "dr\0", "ae\0", "fm\0", "il\0", "hi\0", "bf\0", "eq\0", "la\0", "su\0", "me\0", "ca\0", "lo\0", "ag\0", "gh\0", "ta\0", "ma\0", "to\0", "ro\0", "du\0"};
     char expected[] = {"ae\0", "ag\0", "bf\0", "ca\0", "cg\0", "dr\0", "du\0", "eq\0", "fm\0", "gc\0", "gh\0", "hi\0", "il\0", "la\0", "lo\0", "ma\0", "me\0", "ro\0", "su\0", "ta\0", "to\0"};
