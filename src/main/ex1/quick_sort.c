@@ -1,7 +1,11 @@
 #include "quick_sort.h"
 
-void swap(void *a, void *b) {
-    
+void swap(void *a, void *b, size_t size) {
+    unsigned char temp[size];
+
+    memcpy(temp, a, size);
+    memcpy(a, b, size);
+    memcpy(b, temp, size);
 }
 
 int partition(void *base, size_t size, size_t left, size_t right, int (*compar)(const void*, const void*)) {
@@ -10,12 +14,12 @@ int partition(void *base, size_t size, size_t left, size_t right, int (*compar)(
 
     for (size_t j = left; j < right; j++) {
         if (compar(base + j * size, pivot) < 0) {
-            swap(base + i * size, base + j * size);
+            swap(base + i * size, base + j * size, size);
             i++;
         }
     }
 
-    swap(base + i * size, base + right * size);
+    swap(base + i * size, base + right * size, size);
 
     return i;
 }
