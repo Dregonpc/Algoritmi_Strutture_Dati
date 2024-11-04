@@ -35,8 +35,8 @@ int compare_string(const void *a, const void *b) {
     if (is_null(a, b, &ret))
         return ret;
     
-    char first = *(char**)a;
-    char second = *(char**)b;
+    char *first = *(char**)a;
+    char *second = *(char**)b;
 
     return strcmp(first, second);
 }

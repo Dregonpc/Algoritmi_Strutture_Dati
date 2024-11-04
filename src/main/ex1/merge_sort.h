@@ -1,4 +1,4 @@
-#include "../shared/compare.h"
+#include "../../shared/compare.h"
 #include <stdlib.h>
 #include <string.h>
 

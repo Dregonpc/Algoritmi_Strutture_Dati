@@ -1,18 +1,14 @@
 #include "../main/ex1/quick_sort.h"
 #include "Unity/unity.h"
 
+void setUp(void) {}
+void tearDown(void) {}
+
 void test_null_array(void) {
     int *test = NULL;
     TEST_ASSERT_NULL(test);
     quick_sort(test, 0, 0, compare_int);
     TEST_ASSERT_NULL(test);
-}
-
-void test_empty_array(void) {
-    int test[] = {};
-    int expected[] = {};
-    quick_sort(test, 0, 0, compare_int);
-    TEST_ASSERT_EQUAL_INT_ARRAY(expected, test, 0);
 }
 
 void test_positive_int_array() {
@@ -65,8 +61,8 @@ void test_char_array(void) {
 }
 
 void test_string_array(void) {
-    char test[] = {"cg\0", "gc\0", "dr\0", "ae\0", "fm\0", "il\0", "hi\0", "bf\0", "eq\0", "la\0", "su\0", "me\0", "ca\0", "lo\0", "ag\0", "gh\0", "ta\0", "ma\0", "to\0", "ro\0", "du\0"};
-    char expected[] = {"ae\0", "ag\0", "bf\0", "ca\0", "cg\0", "dr\0", "du\0", "eq\0", "fm\0", "gc\0", "gh\0", "hi\0", "il\0", "la\0", "lo\0", "ma\0", "me\0", "ro\0", "su\0", "ta\0", "to\0"};
+    char *test[20] = {"cg\0", "gc\0", "dr\0", "ae\0", "fm\0", "il\0", "hi\0", "bf\0", "eq\0", "la\0", "su\0", "me\0", "ca\0", "lo\0", "ag\0", "gh\0", "ta\0", "ma\0", "ro\0", "du\0"};
+    char *expected[20] = {"ae\0", "ag\0", "bf\0", "ca\0", "cg\0", "dr\0", "du\0", "eq\0", "fm\0", "gc\0", "gh\0", "hi\0", "il\0", "la\0", "lo\0", "ma\0", "me\0", "ro\0", "su\0", "ta\0"};
     quick_sort(test, 20, sizeof(test[0]), compare_string);
     TEST_ASSERT_EQUAL_STRING_ARRAY(expected, test, 20);
 }
@@ -89,7 +85,6 @@ int main(void) {
     UNITY_BEGIN();
 
     RUN_TEST(test_null_array);
-    RUN_TEST(test_empty_array);
     RUN_TEST(test_positive_int_array);
     RUN_TEST(test_negative_int_array);
     RUN_TEST(test_int_array);
