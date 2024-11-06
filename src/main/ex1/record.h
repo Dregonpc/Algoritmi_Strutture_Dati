@@ -8,7 +8,7 @@ struct Record {
     char *field1;
     int field2;
     float field3;
-}
+};
 
 // make a mk_record?
 
