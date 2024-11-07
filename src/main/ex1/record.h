@@ -2,13 +2,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-struct Record {
+typedef struct {
     int id;
-
     char *field1;
     int field2;
     float field3;
-};
+} Record;
 
 // make a mk_record?
 
