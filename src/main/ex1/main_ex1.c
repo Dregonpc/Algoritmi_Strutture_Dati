@@ -6,13 +6,7 @@
 #include <string.h>
 #include <time.h>
 
-Record* load_data(FILE *infile, size_t *num_records) {
-    FILE *file = fopen(infile, 'r');
-    if (file == NULL) {
-        printf("Error opening file.");
-        return NULL;
-    }
-    
+Record* load_data(FILE *infile, size_t *num_records) {    
     char line[256];
     size_t capacity = 8;
     *num_records = 0;
@@ -20,13 +14,13 @@ Record* load_data(FILE *infile, size_t *num_records) {
     Record *records = (Record*)malloc(capacity * sizeof(Record));
     if (records == NULL) {
         printf("Memory allocation error.");
-        fclose(file);
+        fclose(infile);
         return NULL;
     }
 
-    while (fgets(line, sizeof(line), file) != NULL) {
+    while (fgets(line, sizeof(line), infile) != NULL) {
         Record record;
-        if (sscanf(line, "%d,%s,%d,%f", &record.id, &record.field1, &record.field2, &record.field3) == 4) {
+        if (sscanf(line, "%d,%s,%d,%f", &record.id, record.field1, &record.field2, &record.field3) == 4) {
             records[*num_records] = record;
             (*num_records)++;
 
@@ -35,31 +29,26 @@ Record* load_data(FILE *infile, size_t *num_records) {
                 records = realloc(records, capacity * sizeof(Record));
                 if (records == NULL) {
                     printf("Memory reallocation error.");
-                    fclose(file);
+                    fclose(infile);
                     return NULL;
                 }
             }
         }
     }
 
-    fclose(file);
+    fclose(infile);
     return records;
 }
 
 void write_data(FILE *outfile, Record* records, size_t *num_records) {
-    FILE *file = fopen(outfile, 'w');
-    if (file == NULL) {
-        printf("Error opening file.");
-        return NULL;
-    }
-
-    for (size_t i = 0; i < num_records; i++) {
+    for (size_t i = 0; i < *num_records; i++) {
         fprintf(outfile, "%d,%s,%d,%f\n", records[i].id, records[i].field1, records[i].field2, records[i].field3);
     }
 
-    fclose(file);
+    fclose(outfile);
 }
 
+// tipo FILE per me sbagliato, ti obbliga ad aprirli subito entrambi
 void sort_records(FILE *infile, FILE *outfile, size_t field, size_t algo) {
     size_t num_records;
     Record *records = load_data(infile, &num_records);
@@ -82,7 +71,7 @@ void sort_records(FILE *infile, FILE *outfile, size_t field, size_t algo) {
     else
         quick_sort(records, num_records, sizeof(Record), compar);
 
-    write_data(outfile, &records, &num_records);
+    write_data(outfile, records, &num_records);
 
     free(records);
 }
@@ -94,14 +83,15 @@ int main(int argc, char const *argv[]) {
     }
 
     //TO DO:
-    // 1: Controllo parametri
+    // 1: Controllo parametri 
     // 2: void sort_records(FILE *infile, FILE *outfile, size_t field, size_t algo);
     // 3: dentro la funzione:
     // 4: funzione leggi file
     // 5: funzione sorting
     // 6: funzione scrittura file
 
-    if (argv[3] < 1 || argv[3] > 3) {
+    int fieldKey = atoi(argv[3]); // non ottimale va usato un metodo per controllare se il cast va a buon fine e in realtà servirebbe da string a size_t
+    if (fieldKey < 1 || fieldKey > 3) {
         printf("Error, to start:\nmain_ex1.c (Path of the file to read) (Path of the file to write to) (1/2/3 = indicates which of the three fields should be used to sort the records.)");
         exit(EXIT_FAILURE);
     }
@@ -115,7 +105,19 @@ int main(int argc, char const *argv[]) {
         exit(EXIT_FAILURE);
     }
 
-    sort_records(argv[1], argv[2], argv[3], algo);
+    FILE *inFile = fopen(argv[1], "r");
+    if (inFile == NULL) {
+        printf("Error opening file.");
+        exit(EXIT_FAILURE);
+    }
+
+    FILE *outFile = fopen(argv[2], "w");
+    if (outFile == NULL) {
+        printf("Error opening file.");
+        exit(EXIT_FAILURE);
+    }
+
+    sort_records(inFile, outFile, fieldKey, algo);
 
     return (EXIT_SUCCESS);
 }
