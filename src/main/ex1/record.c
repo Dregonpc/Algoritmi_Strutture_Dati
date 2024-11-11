@@ -1,4 +1,5 @@
-#include "record.h"
+#include "headers/record.h"
+#include "headers/compare.h"
 
 int compare_records_string(const void *a, const void *b) { 
     Record *first = (Record *)a;

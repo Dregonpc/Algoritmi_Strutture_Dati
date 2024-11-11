@@ -5,7 +5,6 @@ CFLAGS = -g -Wall -Wextra -DUNITY_INCLUDE_DOUBLE -DUNITY_OUTPUT_COLOR
 BIN := bin
 SRC := src
 BLD := build
-SHD := shared
 
 # Crea le directory se non esistono
 $(shell mkdir -p $(BIN) $(BLD))
@@ -21,7 +20,7 @@ $(BIN)/merge_sort_test: $(BLD)/unity.o $(BLD)/compare.o $(BLD)/merge_sort.o $(BL
 $(BLD)/unity.o: $(SRC)/test/Unity/unity.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(BLD)/compare.o: $(SRC)/$(SHD)/compare.c
+$(BLD)/compare.o: $(SRC)/main/ex1/compare.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(BLD)/merge_sort.o: $(SRC)/main/ex1/merge_sort.c
@@ -48,7 +47,7 @@ $(BLD)/test_ex1.o: $(SRC)/test/test_ex1.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # Es1: main_ex1
-$(BIN)/main_ex1: $(BLD)/record.o $(BLD)/quick_sort.o $(BLD)/merge_sort.o $(BLD)/main_ex1.o
+$(BIN)/main_ex1: $(BLD)/record.o $(BLD)/compare.o $(BLD)/quick_sort.o $(BLD)/merge_sort.o $(BLD)/main_ex1.o
 	$(CC) $(CFLAGS) $^ -o $@
 
 $(BLD)/record.o: $(SRC)/main/ex1/record.c

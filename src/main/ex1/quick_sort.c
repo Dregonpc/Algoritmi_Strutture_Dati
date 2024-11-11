@@ -1,4 +1,4 @@
-#include "quick_sort.h"
+#include "headers/quick_sort.h"
 
 void swap(void *a, void *b, size_t size) {
     unsigned char *temp = (unsigned char *)malloc(size);

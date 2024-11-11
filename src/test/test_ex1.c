@@ -1,5 +1,5 @@
-#include "../main/ex1/merge_sort.h"
-#include "../main/ex1/quick_sort.h"
+#include "../main/ex1/headers/merge_sort.h"
+#include "../main/ex1/headers/quick_sort.h"
 #include "Unity/unity.h"
 
 void setUp(void) {}

@@ -1,4 +1,4 @@
-#include "compare.h"
+#include "headers/compare.h"
 
 int is_null(const void *a, const void *b, int *check) {
     if (a != NULL && b != NULL)
