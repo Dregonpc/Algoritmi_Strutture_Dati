@@ -48,7 +48,6 @@ void write_data(FILE *outfile, Record* records, size_t *num_records) {
     fclose(outfile);
 }
 
-// tipo FILE per me sbagliato, ti obbliga ad aprirli subito entrambi
 void sort_records(FILE *infile, FILE *outfile, size_t field, size_t algo) {
     size_t num_records;
     Record *records = load_data(infile, &num_records);
@@ -66,10 +65,21 @@ void sort_records(FILE *infile, FILE *outfile, size_t field, size_t algo) {
     else
         compar = compare_records_float;
 
-    if (algo == 1)
+    clock_t start, end;
+    if (algo == 1) { 
+        start = clock();
         merge_sort(records, num_records, sizeof(Record), compar);
-    else
+        end = clock();
+        float exTime = (float)(end - start);
+        printf("Time of esecution of merge sort in this case is %f seconds\n", exTime);
+    }
+    else {
+        start = clock();
         quick_sort(records, num_records, sizeof(Record), compar);
+        end = clock();
+        float exTime = (float)(end - start);
+        printf("Time of esecution of quick sort in this case is %f seconds\n", exTime);
+    }
 
     write_data(outfile, records, &num_records);
 
@@ -90,7 +100,7 @@ int main(int argc, char const *argv[]) {
     // 5: funzione sorting
     // 6: funzione scrittura file
 
-    int fieldKey = atoi(argv[3]); // non ottimale va usato un metodo per controllare se il cast va a buon fine e in realtà servirebbe da string a size_t
+    int fieldKey = atoi(argv[3]);
     if (fieldKey < 1 || fieldKey > 3) {
         printf("Error, to start:\nmain_ex1.c (Path of the file to read) (Path of the file to write to) (1/2/3 = indicates which of the three fields should be used to sort the records.)");
         exit(EXIT_FAILURE);
@@ -100,7 +110,7 @@ int main(int argc, char const *argv[]) {
     printf("Please, choose the algorithm to use (1 = Merge sort, 2 = Quick sort): ");
     scanf("%d", &algo);
 
-    if (algo != 1 || algo != 2) {
+    if (algo < 1 || algo > 2) {
         printf("Error, invalid input. You can choose between 1 or 2. (1 = Merge sort, 2 = Quick sort).");
         exit(EXIT_FAILURE);
     }
