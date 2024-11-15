@@ -1,4 +1,4 @@
-#include "headers/merge_sort.h"
+#include "../headers/merge_sort.h"
 
 void merge(void *base, size_t left_count, size_t right_count, size_t size, int (*compar)(const void*, const void*)) {
     

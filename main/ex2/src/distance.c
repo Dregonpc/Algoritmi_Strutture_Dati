@@ -1,4 +1,4 @@
-#include "headers/distance.h"
+#include "../headers/distance.h"
 
 int edit_distance(const char *s1, const char* s2) {
     if (strlen(s1) == 0)
@@ -20,10 +20,10 @@ int edit_distance(const char *s1, const char* s2) {
 
     int min = d_noop;
 
-    if (min < d_canc)
+    if (d_canc < min)
         min = d_canc;
 
-    if (min < d_ins)
+    if (d_ins < min)
         min = d_ins;
 
     return min;

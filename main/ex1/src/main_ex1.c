@@ -1,6 +1,6 @@
-#include "headers/merge_sort.h"
-#include "headers/quick_sort.h"
-#include "headers/record.h"
+#include "../headers/merge_sort.h"
+#include "../headers/quick_sort.h"
+#include "../headers/record.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
