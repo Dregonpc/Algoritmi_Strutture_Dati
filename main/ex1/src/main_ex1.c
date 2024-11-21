@@ -6,33 +6,48 @@
 #include <string.h>
 #include <time.h>
 
-Record* load_data(FILE *infile, size_t *num_records) {    
+Record* load_data(FILE *infile, size_t *num_records) {
     char line[256];
     size_t capacity = 8;
     *num_records = 0;
+    int i = 0;
 
     Record *records = (Record*)malloc(capacity * sizeof(Record));
     if (records == NULL) {
-        printf("Memory allocation error.");
+        printf("Errore nell'allocazione della memoria.\n");
         fclose(infile);
         return NULL;
     }
-
+    
     while (fgets(line, sizeof(line), infile) != NULL) {
+        // Rimuovi il newline finale se presente
+        size_t len = strlen(line);
+        if (len > 0 && (line[len - 1] == '\n')) { // || line[len - 1] == '\r'
+            line[len - 1] = '\0';
+        }
+
         Record record;
-        if (sscanf(line, "%d,%s,%d,%f", &record.id, record.field1, &record.field2, &record.field3) == 4) {
+
+        if (sscanf(line, "%d,%49[^,],%d,%f", &record.id, record.field1, &record.field2, &record.field3) == 4) {
             records[*num_records] = record;
             (*num_records)++;
 
             if (*num_records == capacity) {
+                //printf("Riallocazione necessaria: %zu record letti.\n", *num_records);
                 capacity *= 2;
                 records = realloc(records, capacity * sizeof(Record));
                 if (records == NULL) {
-                    printf("Memory reallocation error.");
+                    printf("Errore nella riallocazione della memoria.\n");
                     fclose(infile);
                     return NULL;
                 }
             }
+
+            printf("Sto leggendo: %d\n", i);
+            i++;
+        } 
+        else {
+            printf("Errore nel parsing della riga: '%s'\n", line);
         }
     }
 
@@ -87,31 +102,15 @@ void sort_records(FILE *infile, FILE *outfile, size_t field, size_t algo) {
 }
 
 int main(int argc, char const *argv[]) {
-    if (argc < 3) {
-        printf("Error, to start:\nmain_ex1.c (Path of the file to read) (Path of the file to write to) (1/2/3 = indicates which of the three fields should be used to sort the records.)");
+    if (argc < 5) {
+        printf("Error, to start:\nmain_ex1.c (Path of the file to read) (Path of the file to write to) (1/2/3 = indicates which of the three fields should be used to sort the records.) (1/2 = Merge sort / Quick sort)");
         exit(EXIT_FAILURE);
     }
-
-    //TO DO:
-    // 1: Controllo parametri 
-    // 2: void sort_records(FILE *infile, FILE *outfile, size_t field, size_t algo);
-    // 3: dentro la funzione:
-    // 4: funzione leggi file
-    // 5: funzione sorting
-    // 6: funzione scrittura file
 
     int fieldKey = atoi(argv[3]);
-    if (fieldKey < 1 || fieldKey > 3) {
-        printf("Error, to start:\nmain_ex1.c (Path of the file to read) (Path of the file to write to) (1/2/3 = indicates which of the three fields should be used to sort the records.)");
-        exit(EXIT_FAILURE);
-    }
-
-    int algo;
-    printf("Please, choose the algorithm to use (1 = Merge sort, 2 = Quick sort): ");
-    scanf("%d", &algo);
-
-    if (algo < 1 || algo > 2) {
-        printf("Error, invalid input. You can choose between 1 or 2. (1 = Merge sort, 2 = Quick sort).");
+    int algo = atoi(argv[4]);
+    if ((fieldKey < 1 || fieldKey > 3) || (algo < 1 || algo > 2)) {
+        printf("Error, to start:\nmain_ex1.c (Path of the file to read) (Path of the file to write to) (1/2/3 = indicates which of the three fields should be used to sort the records.) (1/2 = Merge sort / Quick sort)");
         exit(EXIT_FAILURE);
     }
 

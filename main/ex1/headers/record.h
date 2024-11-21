@@ -3,7 +3,7 @@
 
 typedef struct {
     int id;
-    char *field1;
+    char field1[50];
     int field2;
     float field3;
 } Record;
