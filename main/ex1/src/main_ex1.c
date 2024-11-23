@@ -90,14 +90,14 @@ void sort_records(FILE *infile, FILE *outfile, size_t field, size_t algo) {
         start = clock();
         merge_sort(records, num_records, sizeof(Record), compar);
         end = clock();
-        float exTime = (float)(end - start);
+        float exTime = (float)((end - start)/CLOCKS_PER_SEC);
         printf("Time of esecution of merge sort in this case is %f seconds\n", exTime);
     }
     else {
         start = clock();
         quick_sort(records, num_records, sizeof(Record), compar);
         end = clock();
-        float exTime = (float)(end - start);
+        float exTime = (float)((end - start)/CLOCKS_PER_SEC);
         printf("Time of esecution of quick sort in this case is %f seconds\n", exTime);
     }
 
