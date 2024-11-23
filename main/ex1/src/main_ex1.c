@@ -6,23 +6,24 @@
 #include <string.h>
 #include <time.h>
 
+#define MAXCAPACITY 21000000
+
 Record* load_data(FILE *infile, size_t *num_records) {
     char line[256];
     size_t capacity = 8;
     *num_records = 0;
-    int i = 0;
 
     Record *records = (Record*)malloc(capacity * sizeof(Record));
     if (records == NULL) {
-        printf("Errore nell'allocazione della memoria.\n");
+        printf("Allocation memory error.\n");
         fclose(infile);
         return NULL;
     }
     
     while (fgets(line, sizeof(line), infile) != NULL) {
-        // Rimuovi il newline finale se presente
+        // Remove newline if exist
         size_t len = strlen(line);
-        if (len > 0 && (line[len - 1] == '\n')) { // || line[len - 1] == '\r'
+        if (len > 0 && (line[len - 1] == '\n')) {
             line[len - 1] = '\0';
         }
 
@@ -35,16 +36,20 @@ Record* load_data(FILE *infile, size_t *num_records) {
             if (*num_records == capacity) {
                 //printf("Riallocazione necessaria: %zu record letti.\n", *num_records);
                 capacity *= 2;
+
+                if (capacity > MAXCAPACITY)
+                    capacity = MAXCAPACITY;
+                
                 records = realloc(records, capacity * sizeof(Record));
                 if (records == NULL) {
-                    printf("Errore nella riallocazione della memoria.\n");
+                    printf("Reallocation memory error.\n");
+                    free(records);
                     fclose(infile);
                     return NULL;
                 }
             }
 
-            printf("Sto leggendo: %d\n", i);
-            i++;
+            //printf("Numero di record letti finora: %zu\n", *num_records);
         } 
         else {
             printf("Errore nel parsing della riga: '%s'\n", line);
@@ -116,13 +121,13 @@ int main(int argc, char const *argv[]) {
 
     FILE *inFile = fopen(argv[1], "r");
     if (inFile == NULL) {
-        printf("Error opening file.");
+        printf("Error opening file (input file).\n");
         exit(EXIT_FAILURE);
     }
 
     FILE *outFile = fopen(argv[2], "w");
     if (outFile == NULL) {
-        printf("Error opening file.");
+        printf("Error opening file (output file).\n");
         exit(EXIT_FAILURE);
     }
 
