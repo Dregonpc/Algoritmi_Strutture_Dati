@@ -21,20 +21,30 @@ Record* load_data(FILE *infile, size_t *num_records) {
     }
     
     while (fgets(line, sizeof(line), infile) != NULL) {
-        // Remove newline if exist
         size_t len = strlen(line);
         if (len > 0 && (line[len - 1] == '\n')) {
             line[len - 1] = '\0';
         }
 
         Record record;
+        char temp_field1[50];
 
-        if (sscanf(line, "%d,%49[^,],%d,%f", &record.id, record.field1, &record.field2, &record.field3) == 4) {
+        if (sscanf(line, "%d,%49[^,],%d,%f", &record.id, temp_field1, &record.field2, &record.field3) == 4) {
+            record.field1 = strdup(temp_field1);
+            if (record.field1 == NULL) {
+                printf("String allocation error.\n");
+                for (size_t i = 0; i < *num_records; i++) {
+                    free(records[i].field1);
+                }
+                free(records);
+                fclose(infile);
+                return NULL;
+            }
+            
             records[*num_records] = record;
             (*num_records)++;
 
             if (*num_records == capacity) {
-                //printf("Riallocazione necessaria: %zu record letti.\n", *num_records);
                 capacity *= 2;
 
                 if (capacity > MAXCAPACITY)
@@ -48,11 +58,9 @@ Record* load_data(FILE *infile, size_t *num_records) {
                     return NULL;
                 }
             }
-
-            //printf("Numero di record letti finora: %zu\n", *num_records);
         } 
         else {
-            printf("Errore nel parsing della riga: '%s'\n", line);
+            printf("Error parsing line: '%s'\n", line);
         }
     }
 
@@ -66,6 +74,13 @@ void write_data(FILE *outfile, Record* records, size_t *num_records) {
     }
 
     fclose(outfile);
+}
+
+void free_memory(Record *records, size_t *num_records) {
+    for (size_t i = 0; i < *num_records; i++) {
+        free(records[i].field1);
+    }
+    free(records);
 }
 
 void sort_records(FILE *infile, FILE *outfile, size_t field, size_t algo) {
@@ -91,19 +106,19 @@ void sort_records(FILE *infile, FILE *outfile, size_t field, size_t algo) {
         merge_sort(records, num_records, sizeof(Record), compar);
         end = clock();
         float exTime = (float)((end - start)/CLOCKS_PER_SEC);
-        printf("Time of esecution of merge sort in this case is %f seconds\n", exTime);
+        printf("Time of execution of merge sort in this case is %f seconds\n", exTime);
     }
     else {
         start = clock();
         quick_sort(records, num_records, sizeof(Record), compar);
         end = clock();
         float exTime = (float)((end - start)/CLOCKS_PER_SEC);
-        printf("Time of esecution of quick sort in this case is %f seconds\n", exTime);
+        printf("Time of execution of quick sort in this case is %f seconds\n", exTime);
     }
 
     write_data(outfile, records, &num_records);
 
-    free(records);
+    free_memory(records, &num_records);
 }
 
 int main(int argc, char const *argv[]) {
