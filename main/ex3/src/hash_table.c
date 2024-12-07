@@ -132,14 +132,21 @@ void** hash_table_keyset(const HashTable* table) {
 
 // Deallocare la Tavola Hash
 void hash_table_free(HashTable* table) {
-    for (int i = 0; i < table->capacity; i++) {
-        HashNode* current = table->buckets[i];
-        while (current != NULL) {
-            HashNode* temp = current;
-            current = current->next;
-            free(temp);
+    if (table == NULL) return;
+
+    if (table->buckets != NULL) {
+        for (int i = 0; i < table->capacity; i++) {
+            HashNode* current = table->buckets[i];
+            while (current) {
+                HashNode* temp = current;
+                current = current->next;
+                free(temp);
+            }
         }
+        free(table->buckets);
+        table->buckets = NULL; // Invalida il puntatore
     }
-    free(table->buckets);
+
     free(table);
+    table = NULL; // Invalida il puntatore alla tabella
 }
