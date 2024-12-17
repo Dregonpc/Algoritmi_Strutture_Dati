@@ -35,6 +35,47 @@ char* normalize_word(const char* word) {
     return clean_word;
 }
 
+// Funzione per copiare manualmente una stringa
+char* manual_strdup(const char* str) {
+    int len = strlen(str) + 1; // +1 per il terminatore null '\0'
+    char* copy = (char*)malloc(len);
+    if (copy) {
+        strcpy(copy, str);
+    }
+    return copy;
+}
+
+void process_and_split_word(const char* input_word, int min_length, HashTable* table) {
+    int len = strlen(input_word);
+    char buffer[1024]; // Buffer per ogni sottostringa
+    int j = 0;
+
+    for (int i = 0; i <= len; i++) { // Include il terminatore null '\0'
+        if (!isalnum(input_word[i]) || input_word[i] == '\0') { // Delimitatore trovato
+            if (j > 0) { // Se il buffer contiene una parola valida
+                buffer[j] = '\0'; // Termina la sottostringa
+                char* normalized_word = normalize_word(buffer);
+                if (strlen(normalized_word) >= (size_t)min_length) {
+                    // Inserisce la parola nella hash table
+                    int* count = (int*)hash_table_get(table, normalized_word);
+                    if (count) {
+                        (*count)++;
+                    } else {
+                        char* key_copy = manual_strdup(normalized_word);
+                        int* new_count = (int*)malloc(sizeof(int));
+                        *new_count = 1;
+                        hash_table_put(table, key_copy, new_count);
+                    }
+                }
+                free(normalized_word);
+                j = 0; // Resetta il buffer
+            }
+        } else {
+            buffer[j++] = tolower(input_word[i]); // Copia carattere alfanumerico in minuscolo
+        }
+    }
+}
+
 // Legge il file e popola la hash table
 void read_words_from_file(const char* file_path, int min_length, HashTable* table) {
     FILE* file = fopen(file_path, "r");
@@ -45,19 +86,7 @@ void read_words_from_file(const char* file_path, int min_length, HashTable* tabl
 
     char buffer[1024];
     while (fscanf(file, "%1023s", buffer) == 1) {
-        char* word = normalize_word(buffer);
-        if (strlen(word) >= (size_t)min_length) {
-            // Controlla se la parola è già nella tabella
-            int* count = (int*)hash_table_get(table, word);
-            if (count) {
-                (*count)++;
-            } else {
-                int* new_count = (int*)malloc(sizeof(int));
-                *new_count = 1;
-                hash_table_put(table, strdup(word), new_count);
-            }
-        }
-        free(word);
+        process_and_split_word(buffer, min_length, table);
     }
 
     fclose(file);
@@ -91,7 +120,7 @@ void find_max_frequency_word(HashTable* table, int min_length) {
 void free_hash_table_with_values(HashTable* table) {
     void** keys = hash_table_keyset(table);
     for (int i = 0; i < hash_table_size(table); i++) {
-        free(keys[i]); // Libera le chiavi duplicate
+        free(keys[i]); // Libera le chiavi allocate manualmente
         free(hash_table_get(table, keys[i])); // Libera i conteggi
     }
     free(keys);
