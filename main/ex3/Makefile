@@ -14,10 +14,13 @@ default: all
 all: $(BIN)/main_ex3 $(BIN)/test_ex3
 
 #Es3: Main
-$(BIN)/main_ex3: $(BLD)/hash_table.o $(BLD)/main_ex3.o
+$(BIN)/main_ex3: $(BLD)/hash_table.o $(BLD)/word_count.o $(BLD)/main_ex3.o
 	$(CC) $(CFLAGS) $^ -o $@
 
 $(BLD)/hash_table.o: $(SRC)/hash_table.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(BLD)/word_count.o: $(SRC)/word_count.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(BLD)/main_ex3.o: $(SRC)/main_ex3.c

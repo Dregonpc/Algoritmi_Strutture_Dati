@@ -1,30 +1,26 @@
+#include "../headers/word_count.h"
 #include <stdio.h>
-#include <string.h>
-#include "../headers/hash_table.h"
+#include <stdlib.h>
 
-int compare_strings(const void* a, const void* b) {
-    return !strcmp((const char*)a, (const char*)b);
-}
-
-unsigned long hash_string(const void* key) {
-    const char* str = (const char*)key;
-    unsigned long hash = 5381;
-    int c;
-    while ((c = *str++)) {
-        hash = ((hash << 5) + hash) + c;
+int main(int argc, char* argv[]) {
+    // Controllo degli argomenti
+    if (argc != 3) {
+        fprintf(stderr, "Uso corretto: %s <file_di_testo> <lunghezza_minima>\n", argv[0]);
+        return 1;
     }
-    return hash;
-}
 
-int main() {
-    HashTable* table = hash_table_create(compare_strings, hash_string);
+    // Lettura del percorso del file
+    const char* file_path = argv[1];
 
-    hash_table_put(table, "key1", "value1");
-    hash_table_put(table, "key2", "value2");
+    // Conversione della lunghezza minima da stringa a intero
+    int min_length = atoi(argv[2]);
+    if (min_length <= 0) {
+        fprintf(stderr, "Errore: la lunghezza minima deve essere un intero positivo.\n");
+        return 1;
+    }
 
-    printf("Key1: %s\n", (char*)hash_table_get(table, "key1"));
-    printf("Key2: %s\n", (char*)hash_table_get(table, "key2"));
+    // Richiama la funzione principale
+    find_most_frequent_word(file_path, min_length);
 
-    hash_table_free(table);
     return 0;
 }
