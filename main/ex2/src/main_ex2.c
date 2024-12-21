@@ -71,7 +71,7 @@ Words* read_dictionary(const char *filename, size_t* num_words_dictionary) {
     count++;
 
     if (count >= capacity) {
-      capacity *= 2;
+      capacity *= 1.5;
       dictionary = realloc(dictionary, capacity * sizeof(Words));
       if (dictionary == NULL) {
         printf("Reallocation memory error.\n");
@@ -121,7 +121,7 @@ Words* read_text(const char *filename, size_t* num_words_text) {
     }
 
     if (count >= capacity) {
-      capacity *= 2;
+      capacity *= 1.5;
       text = realloc(text, capacity * sizeof(Words));
       if (text == NULL) {
         printf("Reallocation memory error.\n");

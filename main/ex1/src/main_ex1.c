@@ -6,13 +6,11 @@
 #include <string.h>
 #include <time.h>
 
-#define MAXCAPACITY 21000000
-
 Record* load_data(FILE *infile, size_t *num_records) {
     char line[256];
     size_t capacity = 8;
     *num_records = 0;
-
+    
     Record *records = (Record*)malloc(capacity * sizeof(Record));
     if (records == NULL) {
         printf("Allocation memory error.\n");
@@ -45,10 +43,7 @@ Record* load_data(FILE *infile, size_t *num_records) {
             (*num_records)++;
 
             if (*num_records == capacity) {
-                capacity *= 2;
-
-                if (capacity > MAXCAPACITY)
-                    capacity = MAXCAPACITY;
+                capacity *= 1.5;
                 
                 records = realloc(records, capacity * sizeof(Record));
                 if (records == NULL) {
