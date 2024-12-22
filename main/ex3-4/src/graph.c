@@ -44,9 +44,19 @@ int graph_remove_node(Graph gr, const void* node);                              
 
 int graph_remove_edge(Graph gr, const void* node1, const void* node2);                           // rimuove un arco dal grafo -- O(1) (*)
 
-int graph_num_nodes(const Graph gr);                                                             // numero di nodi -- O(1)
+int graph_num_nodes(const Graph gr) {
+  if (gr != NULL)
+    return gr->num_nodes;
+  else
+    return -1;
+}                                                             // numero di nodi -- O(1)
 
-int graph_num_edges(const Graph gr);                                                             // numero di archi -- O(N)
+int graph_num_edges(const Graph gr) {
+  if (gr != NULL)
+    return gr->num_edges;
+  else
+    return -1;
+}                                                             // numero di archi -- O(N)
 
 void** graph_get_nodes(const Graph gr);                                                          // recupero dei nodi del grafo -- O(N)
 
@@ -58,5 +68,17 @@ int graph_num_neighbours(const Graph gr, const void* node);                     
 
 void* graph_get_label(const Graph gr, const void* node1, const void* node2);                     // recupero dell'etichetta di un arco -- O(1) (*)
 
-void graph_free(Graph gr);
+void graph_free(Graph gr) {
+  if (gr != NULL) {
+    for (int i = 0; i < gr->num_nodes; i++) {
+      free(gr->nodes[i]);
+    }
+    free(gr->nodes);
+    for (int i = 0; i < gr->num_edges; i++) {
+      free(gr->edges[i]);
+    }
+    free(gr->edges);
+    free(gr);
+  }
+}
 

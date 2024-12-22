@@ -2,6 +2,14 @@
 #include <stdlib.h>
 #include "../headers/graph.h"
 
+/**
+ * @brief visit the graph in depth first order
+ * @param gr the graph
+ * @param start the starting node
+ * @param compare the comparison function
+ * @param hash the hash function
+ * @return the array of nodes in the order of visit, null if the starting node is not in the graph
+ */
 void** breadth_first_visit(Graph gr, void* start, int (*compare)(const void*, const void*), unsigned long (*hash)(const void*));
 //start è il nodo di partenza da cui cominciare la visita, la funzione restituisce l'array dei nodi nell'ordine di visita.
 //eventualmente, la funzione restituisce null se il nodo start non è presente nel grafo gr.
