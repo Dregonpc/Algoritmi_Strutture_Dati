@@ -1,29 +1,12 @@
 /**
  * @brief struct representing a graph
- * @param labelled 1 if the graph is labelled, 0 otherwise
+ * @param nodes Hash table for nodes
  * @param directed 1 if the graph is directed, 0 otherwise
- * @param hash function to hash nodes
- * @param compare function to compare nodes
- * @param nodes set of nodes
- * @param edges set of edges
+ * @param labelled 1 if the graph is labelled, 0 otherwise
  * @param num_nodes number of nodes
  * @param num_edges number of edges
- * @param size size of the set of nodes
- * @param size_edges size of the set of edges
  */
-
-typedef struct graph {
-   int labelled;
-   int directed;
-   unsigned long (*hash)(const void*);
-   int (*compare)(const void*, const void*);
-   void* nodes;
-   void* edges;
-   size_t num_nodes;
-   size_t num_edges;
-   size_t size;
-   size_t size_edges;
-} *Graph;
+typedef struct graph *Graph;
 
 /**
  * @brief struct representing an edge
