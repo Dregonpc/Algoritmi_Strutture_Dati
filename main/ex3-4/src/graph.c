@@ -1,6 +1,7 @@
 #include "../headers/graph.h"
 #include "../headers/hash_table.h"
 #include <stdio.h>
+#include <string.h>
 
 struct graph {
   HashTable* nodes;
@@ -36,7 +37,7 @@ int graph_is_directed(const Graph gr) {
 
 int graph_is_labelled(const Graph gr) {
   if (gr != NULL)
-    return gr->directed;
+    return gr->labelled;
   else
     return -1;
 }
@@ -67,7 +68,7 @@ int graph_add_node(Graph gr, const void* node) {
 }
 
 int graph_add_edge(Graph gr, const void* node1, const void* node2, const void* label){
-  if (gr == NULL)
+  if (gr == NULL || (gr->labelled && label == NULL))
     return -1;
   
   if (!hash_table_contains_key(gr->nodes, node1) || !hash_table_contains_key(gr->nodes, node2))
@@ -77,12 +78,13 @@ int graph_add_edge(Graph gr, const void* node1, const void* node2, const void* l
   if (hash_table_contains_key(adjacency_list, node2))
     return 0;
   
-  hash_table_put(adjacency_list, (void*)node2, (void*)label);
+  char* label_copy = label ? strdup((char*)label) : NULL;
+  hash_table_put(adjacency_list, (void*)node2, label_copy);
   gr->num_edges++;
 
   if (!gr->directed) {
     HashTable* reverse_adjacency_list = (HashTable*)hash_table_get(gr->nodes, node2);
-    hash_table_put(reverse_adjacency_list, (void*)node1, (void*)label);
+    hash_table_put(reverse_adjacency_list, (void*)node1, label ? strdup(label_copy) : NULL);
   }
 
   return 1;
