@@ -14,10 +14,13 @@ default: all
 all: $(BIN)/main_ex3-4 $(BIN)/test_ex3-4
 
 #Es3-4: Main
-$(BIN)/main_ex3-4: $(BLD)/hash_table.o $(BLD)/graph.o $(BLD)/main_ex3-4.o
+$(BIN)/main_ex3-4: $(BLD)/hash_table.o $(BLD)/queue.o $(BLD)/graph.o $(BLD)/main_ex3-4.o
 	$(CC) $(CFLAGS) $^ -o $@
 
 $(BLD)/hash_table.o: $(SRC)/hash_table.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(BLD)/queue.o: $(SRC)/queue.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(BLD)/graph.o: $(SRC)/graph.c
