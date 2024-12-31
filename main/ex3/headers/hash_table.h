@@ -78,6 +78,13 @@ void hash_table_remove(HashTable* table, const void* key);
 int hash_table_size(const HashTable* table);
 
 /**
+ * @brief resize the hash table
+ * @param table hash table to get the capacity of
+ * @return hash table resized
+ */
+void hash_table_resize(HashTable* table);
+
+/**
  * @brief get the keys of the hash table
  * @param table hash table to get the keys of
  * @return keys of the hash table
