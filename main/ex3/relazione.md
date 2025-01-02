@@ -1,18 +1,28 @@
 # Relazione 
 
 ## Indice
-1. [Introduzione / Obbiettivo](#obbiettivo)
+1. [Introduzione / Obiettivo](#obiettivo)
 2. [Svolgimento](#svolgimento)
-4. [Conclusioni](#conclusioni)
+    - [Input 1](#input-1)
+    - [Input 2](#input-2)
+    - [Input 3](#input-3)
+    - [Input 4](#input-4)
+    - [Input 5](#input-5)
+    - [Input 6](#input-6)
+    - [Input 7](#input-7)
+    - [Input 8](#input-8)
+    - [Input 9](#input-9)
+3. [Conclusioni](#conclusioni)
 
-## Obbiettivo
+## Obiettivo
 In questo esercizio il nostro scopo è quello di creare una libreria generica che realizza la struttura dati *tavola hash (con concatenamento)* in grado di ospitare un insieme di coppie
 `{<chiave 1,valore 1>,...,<chiave n,valore n>}`, ovviamente deve essere una libreria il più possibile ottimizzata e deve seguire le regole di scrittura di un buon codice.
 Per la creazione però andremo ad utilizzare dei supporti basati su `Large Language Model (LLM)` come ad esempio ChatGPT.
 
 
-## Svolgimento
-### Sviluppo della libreria
+# Svolgimento
+
+## Sviluppo della libreria
 Come primo approccio per la creazione della libreria da zero abbiamo deciso di utilizzare ChatGPT con il modello GPT-4o mini e per rendere la chat un ambiente ben strutturato sulla creazione di codice come input iniziale abbiamo utilizzato una frase di contesto in cui è specificato l’utilizzo del linguaggio C, la consegna dell’esercizio e come indicazione ulteriore le firme delle funzioni che dovrà andare a sviluppare.
 
 ## Input 1
@@ -451,7 +461,732 @@ Quando la tabella si riempe deve essere ingrandita
 >   table->capacity = new_capacity;
 > }
 >```
+> ### Cosa cambia?
+> 1. **Capacità dinamica**:<br>
+> La tabella hash espande automaticamente quando il fattore di carico supera la soglia.
+> 2. **Ricollocamento degli Elementi:**<br>
+> Quando la tabella viene ridimensionata, gli elementi esistenti vengono reinseriti nei nuovi bucket.
+> 3. **Ottimizzazione dello Spazio:**<br>
+> La tabella utilizza solo lo spazio necessario, crescendo dinamicamente.
+>
+> Fammi sapere se hai bisogno di altre modifiche o chiarimenti!
+
+Nel terzo output infatti è stato aggiunto un nuovo parametro all’interno della struct 	HashTable con load_factor ovvero una variabile dichiarata a 0.75 che permette di riallocare nuovo spazio quando il carico raggiunge i ¾ dello spazio disponibile.
 
 
+## Input 4
+Come quarto input gli abbiamo specificato di rimodulare il codice adattandolo alla nostra funzione di compare,
+che è quella utilizzata anche sui test messi a disposizione su moodle con code runner,
+ritorna 1 se i due elementi sono uguali, 0 altrimenti:
 
+Come funzione di compare utilizzerò una funzione che ritorna 1 se i due elementi sono uguali, 0 se sono diversi.
+Riadatta il codice in base a questa funzione
 
+## Output 4
+> Grazie per la precisazione!
+> Adattiamo il codice affinché utilizzi una funzione di confronto
+> che restituisce 1 se due elementi sono uguali e 0 altrimenti.
+> Di conseguenza, aggiorneremo il controllo di uguaglianza delle chiavi nella tabella hash.
+>
+> Ecco il codice aggiornato:
+>
+> ```c
+> // Ottenere un Valore
+> void* hash_table_get(const HashTable* table, const void* key) {
+>   unsigned long hash = table->hash_function(key) % table->capacity;
+>   HashNode* current = table->buckets[hash];
+>
+>   while (current != NULL) {
+>     if (table->compare_keys(current->key, key) == 1) { // Modifica: confronta con 1 per uguaglianza
+>       return current->value;
+>     }
+>     current = current->next;
+>   }
+>
+>   return NULL; // Chiave non trovata
+> }
+>
+> // Verificare l'Esistenza di una Chiave
+> int hash_table_contains_key(const HashTable* table, const void* key) {
+>   return hash_table_get(table, key) != NULL;
+> }
+> ```
+> ### Modifiche Effettuate
+> 1. **Funzione di Confronto:**
+> Ora si utilizza `table->compare_keys(current->key, key)`e si verifica se ritorna 1 per stabilire che due chiavi sono uguali.
+>
+> 2. **Controllo di Uguaglianza:**
+> L'uguaglianza tra chiavi (`key`) e quelle già presenti nella tabella (`current->key`) è verificata come richiesto.
+>
+> Fammi sapere se hai bisogno di ulteriori dettagli o chiarimenti!
+
+Le modifiche effettuate sono state nell’ utilizzo di table->compare_keys(current->key, key) con la verifica di ritorno 1 se le due chiavi sono uguali, tutto ciò per controllare la presenza della chiave nella tabella come richiesto.
+Successivamente siamo passati alla parte di Unit Testing con la richiesta di 15 test per verificare la funzionalità della libreria, specificando espressamente l’utilizzo della libreria Unity.
+
+## Input 5
+Successivamente siamo passati alla parte di Unit Testing con la richiesta di 15 test per verificare la funzionalità della libreria,
+specificando espressamente l’utilizzo della libreria Unity: 
+
+## Output 5
+> Ecco 20 unit test per verificare il corretto funzionamento della tabella hash implementata,
+> utilizzando la libreria Unity. Questi test coprono i principali casi d'uso
+> e includono anche situazioni limite per verificare la robustezza della struttura dati.
+> ```c
+> #include "Unity/unity.h"
+> #include <string.h>
+> #include <stdlib.h>
+> 
+> // Funzione di hash semplice (per stringhe)
+> unsigned long string_hash(const void* key) {
+>     const char* str = (const char*)key;
+>     unsigned long hash = 5381;
+>     int c;
+>     while ((c = *str++)) {
+>         hash = ((hash << 5) + hash) + c;
+>     }
+>     return hash;
+> }
+> 
+> // Funzione di confronto per stringhe
+> int string_compare(const void* a, const void* b) {
+>     return strcmp((const char*)a, (const char*)b) == 0;
+> }
+> 
+> // Funzione di hash per interi
+> unsigned long int_hash(const void* key) {
+>     return *(int*)key;
+> }
+> 
+> // Funzione di confronto per interi
+> int int_compare(const void* a, const void* b) {
+>     return *(int*)a == *(int*)b;
+> }
+> 
+> // Variabili globali per setup e teardown
+> HashTable* table;
+> 
+> // Setup per ogni test
+> void setUp(void) {
+>     table = hash_table_create(string_compare, string_hash);
+> }
+> 
+> // Teardown per ogni test
+> void tearDown(void) {
+>     hash_table_free(table);
+> }
+> 
+> // 1. Test Creazione della Tavola Hash
+> void test_hash_table_create(void) {
+>     TEST_ASSERT_NOT_NULL(table);
+>     TEST_ASSERT_EQUAL(0, hash_table_size(table));
+> }
+> 
+> // 2. Test Inserimento e Recupero di una Chiave-Valore
+> void test_hash_table_put_get(void) {
+>     hash_table_put(table, "key1", "value1");
+>     TEST_ASSERT_EQUAL_STRING("value1", (char*)hash_table_get(table, "key1"));
+> }
+> 
+> // 3. Test Sostituzione di un Valore
+> void test_hash_table_replace_value(void) {
+>     hash_table_put(table, "key1", "value1");
+>     hash_table_put(table, "key1", "value2");
+>     TEST_ASSERT_EQUAL_STRING("value2", (char*)hash_table_get(table, "key1"));
+> }
+> 
+> // 4. Test Verifica Esistenza Chiave
+> void test_hash_table_contains_key(void) {
+>     hash_table_put(table, "key1", "value1");
+>     TEST_ASSERT_TRUE(hash_table_contains_key(table, "key1"));
+>     TEST_ASSERT_FALSE(hash_table_contains_key(table, "key2"));
+> }
+> 
+> // 5. Test Rimozione di una Coppia
+> void test_hash_table_remove(void) {
+>     hash_table_put(table, "key1", "value1");
+>     hash_table_remove(table, "key1");
+>     TEST_ASSERT_FALSE(hash_table_contains_key(table, "key1"));
+> }
+> 
+> // 6. Test Recupero di una Chiave Non Esistente
+> void test_hash_table_get_non_existent(void) {
+>     TEST_ASSERT_NULL(hash_table_get(table, "key1"));
+> }
+> 
+> // 7. Test Dimensione della Tavola
+> void test_hash_table_size(void) {
+>     hash_table_put(table, "key1", "value1");
+>     hash_table_put(table, "key2", "value2");
+>     TEST_ASSERT_EQUAL(2, hash_table_size(table));
+> }
+> 
+> // 8. Test Keyset della Tavola
+> void test_hash_table_keyset(void) {
+>     hash_table_put(table, "key1", "value1");
+>     hash_table_put(table, "key2", "value2");
+>     void** keys = hash_table_keyset(table);
+> 
+>     // Verifica che le chiavi esistano indipendentemente dall'ordine
+>     int found_key1 = 0, found_key2 = 0;
+>     for (int i = 0; i < hash_table_size(table); i++) {
+>         if (strcmp((char*)keys[i], "key1") == 0) {
+>             found_key1 = 1;
+>         } else if (strcmp((char*)keys[i], "key2") == 0) {
+>             found_key2 = 1;
+>         }
+>     }
+>     TEST_ASSERT_TRUE(found_key1);
+>     TEST_ASSERT_TRUE(found_key2);
+> 
+>     free(keys);
+> }
+> 
+> // 9. Test Ridimensionamento Automatico
+> void test_hash_table_resize(void) {
+>     int new_capacity = table->capacity * 2;
+>     HashNode** new_buckets = (HashNode**)calloc(new_capacity, sizeof(HashNode*));
+> 
+>     for (int i = 0; i < table->capacity; i++) {
+>         HashNode* current = table->buckets[i];
+>         while (current) {
+>             // Ricalcola l'indice nel nuovo array di bucket
+>             unsigned long new_index = table->hash_function(current->key) % new_capacity;
+> 
+>             // Sposta il nodo nel nuovo bucket
+>             HashNode* next = current->next;
+>             current->next = new_buckets[new_index];
+>             new_buckets[new_index] = current;
+> 
+>             current = next;
+>         }
+>     }
+> 
+>     // Sostituisci i vecchi bucket con quelli nuovi
+>     free(table->buckets);
+>     table->buckets = new_buckets;
+>     table->capacity = new_capacity;
+> }
+> 
+> // 10. Test Inserimento di Valori NULL
+> void test_hash_table_put_null_value(void) {
+>     hash_table_put(table, "key1", NULL);
+>     TEST_ASSERT_NULL(hash_table_get(table, "key1"));
+> }
+> 
+> // 11. Test Collisioni (chiavi diverse, stesso hash)
+> void test_hash_table_collision(void) {
+>     HashTable* int_table = hash_table_create(int_compare, int_hash);
+>     int key1 = 1, key2 = 17; // Stesso hash in una tabella con 16 bucket iniziali
+>     hash_table_put(int_table, &key1, "value1");
+>     hash_table_put(int_table, &key2, "value2");
+>     TEST_ASSERT_EQUAL_STRING("value1", (char*)hash_table_get(int_table, &key1));
+>     TEST_ASSERT_EQUAL_STRING("value2", (char*)hash_table_get(int_table, &key2));
+>     hash_table_free(int_table);
+> }
+> 
+> // 12. Test Rimozione con Collisioni
+> void test_hash_table_remove_collision(void) {
+>     HashTable* int_table = hash_table_create(int_compare, int_hash);
+>     int key1 = 1, key2 = 17;
+>     hash_table_put(int_table, &key1, "value1");
+>     hash_table_put(int_table, &key2, "value2");
+>     hash_table_remove(int_table, &key1);
+>     TEST_ASSERT_NULL(hash_table_get(int_table, &key1));
+>     TEST_ASSERT_EQUAL_STRING("value2", (char*)hash_table_get(int_table, &key2));
+>     hash_table_free(int_table);
+> }
+> 
+> // 13. Test Inserimento e Recupero di Interi
+> void test_hash_table_int_keys(void) {
+>     HashTable* int_table = hash_table_create(int_compare, int_hash);
+>     int key = 42;
+>     char* value = "value";
+>     hash_table_put(int_table, &key, value);
+>     TEST_ASSERT_EQUAL_STRING(value, (char*)hash_table_get(int_table, &key));
+>     hash_table_free(int_table);
+> }
+> 
+> // 14. Test con Chiavi Vuote (stringhe vuote)
+> void test_hash_table_empty_string_key(void) {
+>     hash_table_put(table, "", "value");
+>     TEST_ASSERT_EQUAL_STRING("value", (char*)hash_table_get(table, ""));
+> }
+> 
+> // 15. Test Rimozione di Tutti gli Elementi
+> void test_hash_table_clear(void) {
+>     hash_table_put(table, "key1", "value1");
+>     hash_table_put(table, "key2", "value2");
+>     hash_table_remove(table, "key1");
+>     hash_table_remove(table, "key2");
+>     TEST_ASSERT_EQUAL(0, hash_table_size(table));
+> }
+> 
+> // Main per eseguire i test
+> int main(void) {
+>     UNITY_BEGIN();
+> 
+>     RUN_TEST(test_hash_table_create);
+>     RUN_TEST(test_hash_table_put_get);
+>     RUN_TEST(test_hash_table_replace_value);
+>     RUN_TEST(test_hash_table_contains_key);
+>     RUN_TEST(test_hash_table_remove);
+>     RUN_TEST(test_hash_table_get_non_existent);
+>     RUN_TEST(test_hash_table_size);
+>     RUN_TEST(test_hash_table_keyset);
+>     RUN_TEST(test_hash_table_resize);
+>     RUN_TEST(test_hash_table_put_null_value);
+>     RUN_TEST(test_hash_table_collision);
+>     RUN_TEST(test_hash_table_remove_collision);
+>     RUN_TEST(test_hash_table_int_keys);
+>     RUN_TEST(test_hash_table_empty_string_key);
+>     RUN_TEST(test_hash_table_clear);
+> 
+>     return UNITY_END();
+> }
+> ```
+
+Una volta eseguiti i test e verificato la funzionalità della libreria nei vari contesti di utilizzo, 
+abbiamo deciso di iniziare a sviluppare l'applicazione di essa che ha il compito di
+leggere in input un testo e restituire all'utente le parole più frequenti presenti nel testo data una lunghezza mininima di caratteri
+
+## Sviluppo dell'applicazione
+
+## Input 6
+Adesso, dobbiamo scrivere una funzione che legga questo file txt. (File che è stato inviato nella chat)
+Successivamente, bisogna utilizzare l'hash table scritta in precedenza per calcolare qual è la parola ripetuta più volte nel testo
+di lunghezza almeno uguale (o maggiore) di una lunghezza data in input.
+
+## Output 6
+> Per risolvere il problema, scriveremo una funzione che legge il file di testo,
+> tokenizza il contenuto in parole e utilizza la hash table implementata precedentemente per contare la frequenza delle parole.
+> Successivamente, identificheremo la parola ripetuta più frequentemente con lunghezza maggiore o uguale a un valore specifico fornito in input.
+> 
+> **Prassi della soluzione**
+> 1. **Lettura del file di testo**: Apriamo il file e leggiamo il contenuto riga per riga.
+> 2. **Tokenizzazione delle parole**: Suddividiamo il testo in parole rimuovendo punteggiatura e spaziature.
+> 3. **Uso della hash table**: Utilizziamo la tabella hash per contare quante volte compare ogni parola.
+> 4. **Filtraggio**: Consideriamo solo le parole con lunghezza maggiore o uguale a un valore fornito in input.
+> 5. **Ricerca della parola più frequente**: Scansioniamo la tabella per individuare la parola con la frequenza massima.
+> 
+> ### Codice C
+> Ecco l'implementazione completa:
+> 
+> #### Header: `word_count.h`
+> ```c
+> #ifndef WORD_COUNT_H
+> #define WORD_COUNT_H
+> 
+> #include "hash_table.h"
+> 
+> // Funzione principale per trovare la parola più frequente di una data lunghezza
+> void find_most_frequent_word(const char* file_path, int min_length);
+> 
+> #endif // WORD_COUNT_H
+> ```
+> #### Sorgente: `word_count.c`
+> ```c
+> #include "word_count.h"
+> #include <stdio.h>
+> #include <stdlib.h>
+> #include <string.h>
+> #include <ctype.h>
+> 
+> // Funzione di hash per le parole
+> unsigned long string_hash(const void* key) {
+>     const char* str = (const char*)key;
+>     unsigned long hash = 5381;
+>     int c;
+>     while ((c = *str++)) {
+>         hash = ((hash << 5) + hash) + c; // hash * 33 + c
+>     }
+>     return hash;
+> }
+> 
+> // Funzione di confronto per le parole
+> int string_compare(const void* a, const void* b) {
+>     return strcmp((const char*)a, (const char*)b) == 0;
+> }
+> 
+> // Funzione per normalizzare le parole (rimuove punteggiatura e mette in minuscolo)
+> char* normalize_word(const char* word) {
+>     int len = strlen(word);
+>     char* clean_word = (char*)malloc(len + 1);
+>     int j = 0;
+> 
+>     for (int i = 0; i < len; i++) {
+>         if (isalnum(word[i])) {
+>             clean_word[j++] = tolower(word[i]);
+>         }
+>     }
+>     clean_word[j] = '\0';
+>     return clean_word;
+> }
+> 
+> // Funzione per trovare la parola più frequente
+> void find_most_frequent_word(const char* file_path, int min_length) {
+>     HashTable* table = hash_table_create(string_compare, string_hash);
+>     FILE* file = fopen(file_path, "r");
+>     if (!file) {
+>         fprintf(stderr, "Errore: impossibile aprire il file.\n");
+>         return;
+>     }
+> 
+>     char buffer[1024];
+>     while (fscanf(file, "%1023s", buffer) == 1) {
+>         char* word = normalize_word(buffer);
+>         if (strlen(word) >= min_length) {
+>             // Controlla se la parola è già nella tabella
+>             int* count = (int*)hash_table_get(table, word);
+>             if (count) {
+>                 (*count)++;
+>             } else {
+>                 int* new_count = (int*)malloc(sizeof(int));
+>                 *new_count = 1;
+>                 hash_table_put(table, strdup(word), new_count);
+>             }
+>         }
+>         free(word);
+>     }
+> 
+>     fclose(file);
+> 
+>     // Trova la parola con il conteggio massimo
+>     void** keys = hash_table_keyset(table);
+>     int max_count = 0;
+>     char* most_frequent_word = NULL;
+> 
+>     for (int i = 0; i < hash_table_size(table); i++) {
+>         int* count = (int*)hash_table_get(table, keys[i]);
+>         if (*count > max_count) {
+>             max_count = *count;
+>             most_frequent_word = (char*)keys[i];
+>         }
+>     }
+> 
+>     // Stampa il risultato
+>     if (most_frequent_word) {
+>         printf("La parola più frequente di lunghezza >= %d è: '%s' (ripetuta %d volte)\n",
+>                min_length, most_frequent_word, max_count);
+>     } else {
+>         printf("Nessuna parola trovata con lunghezza >= %d.\n", min_length);
+>     }
+> 
+>     // Pulisce la memoria
+>     for (int i = 0; i < hash_table_size(table); i++) {
+>         free(keys[i]); // Libera le chiavi duplicate
+>         free(hash_table_get(table, keys[i])); // Libera i conteggi
+>     }
+>     free(keys);
+>     hash_table_free(table);
+> }
+> ```
+> 
+> ### File di test: `main.c`
+> ```c
+> #include "word_count.h"
+> 
+> int main() {
+>     const char* file_path = "iliade.txt";
+>     int min_length;
+> 
+>     printf("Inserisci la lunghezza minima delle parole da considerare: ");
+>     if (scanf("%d", &min_length) != 1 || min_length <= 0) {
+>         fprintf(stderr, "Errore: lunghezza non valida.\n");
+>         return 1;
+>     }
+> 
+>     find_most_frequent_word(file_path, min_length);
+>     return 0;
+> }
+> ```
+> 
+> ### Esecuzione:
+> 1. Compila il programma: 
+> ```bash
+> gcc -o word_counter main.c word_count.c hash_table.c -I.
+> ```
+> 2. Esegui il programma e fornisci la lunghezza minima: 
+> ```bash
+> ./word_counter
+> Inserisci la lunghezza minima delle parole da considerare: 5
+> ```
+> 3. Il programma leggerà il file iliade.txt
+> e restituirà la parola più frequente di lunghezza maggiore o uguale alla lunghezza fornita
+> 
+> ### Esempio di Output
+> ```bash
+> Inserisci la lunghezza minima delle parole da considerare: 5
+> La parola più frequente di lunghezza >= 5 è: 'achilles' (ripetuta 23 volte)
+> ```
+> ### Spiegazione del Codice
+> 1. **Normalizzazione delle Parole:**
+>     - Rimuove caratteri non alfanumerici.
+>     - Converte le parole in minuscolo.
+> 2. **Hash table:**
+>     - Le parole sono usate come chiavi.
+>     - I valori associati sono puntatori a interi che rappresentano il conteggio delle occorrenze.
+> 3. **Ricerca del Massimo:**
+>     - Si scansionano tutte le chiavi nella tabella per individuare la parola con il conteggio più alto.
+> 3. **Deallocazione della Memoria:**
+>     - Vengono liberate sia le chiavi duplicate sia i conteggi allocati dinamicamente.
+> ---
+> Se hai bisogno di ulteriori chiarimenti o modifiche, fammi sapere!
+
+## Input 7 
+Modifica il main in modo che il file di testo e la lunghezza minima siano letti da argc e argv.
+Esempio di avvio del file: <br>
+```bash
+./main_ex3 /tmp/data/iliade.txt 6
+```
+## Output 7 
+>Ecco la versione aggiornata del main per accettare il percorso del file di testo e la lunghezza minima
+>come argomenti della riga di comando (`argc` e `argv`).
+>
+>### Nuovo `main.c`
+>```c
+>#include "word_count.h"
+>#include <stdio.h>
+>#include <stdlib.h>
+>
+>int main(int argc, char* argv[]) {
+>    // Controllo degli argomenti
+>    if (argc != 3) {
+>        fprintf(stderr, "Uso corretto: %s <file_di_testo> <lunghezza_minima>\n", argv[0]);
+>        return 1;
+>    }
+>
+>    // Lettura del percorso del file
+>    const char* file_path = argv[1];
+>
+>    // Conversione della lunghezza minima da stringa a intero
+>    int min_length = atoi(argv[2]);
+>    if (min_length <= 0) {
+>        fprintf(stderr, "Errore: la lunghezza minima deve essere un intero positivo.\n");
+>        return 1;
+>    }
+>
+>    // Richiama la funzione principale
+>    find_most_frequent_word(file_path, min_length);
+>
+>    return 0;
+>}
+>```
+>---
+>### Modifiche apportate
+>1. **Lettura degli Argomenti:**
+>    - `argv[1]` è il percorso del file di testo..
+>    - `argv[2]` è la lunghezza minima delle parole, convertita in un intero usando `atoi`.
+>2. **Controllo degli Argomenti:**
+>    - Viene verificato che il numero di argomenti sia corretto (`argc == 3`).
+>    - Viene controllato che la lunghezza minima sia un numero positivo.
+>3. **Messaggio di Utilizzo:**
+>    - Se i parametri non sono validi, il programma mostra un messaggio di utilizzo.
+>---
+>### Esecuzione:
+>1. Compila il programma: 
+>```bash
+>gcc -o main_ex3 main.c word_count.c hash_table.c -I.
+>```
+>2. Esegui il programma come segue: 
+>```bash
+>./main_ex3 /tmp/data/iliade.txt 6
+>```
+>### Esempio di Output: 
+>Supponendo che il file /tmp/data/iliade.txt contenga un testo valido, l'output potrebbe essere:
+>```bash
+>La parola più frequente di lunghezza >= 6 è: 'achilles' (ripetuta 23 volte)
+>```
+>
+>### Gestione degli Errori
+>Se mancano parametri o la lunghezza minima è invalida, il programma stampa un messaggio d'errore:
+>```bash
+>Uso corretto: ./main_ex3 <file_di_testo> <lunghezza_minima>
+>Errore: la lunghezza minima deve essere un intero positivo.
+>```
+>
+>Questa modifica rende il programma più flessibile,
+>permettendo di passare il percorso del file e la lunghezza minima direttamente dalla riga di comando.
+>Fammi sapere se serve altro!
+
+Il principale problema di questo risultato è la presenza di poche funzioni,
+quindi in caso di riutilizzo del codice e della manutenzione molto scomodo e disorganizzato
+
+## Input 8 
+Perfetto, ho ancora una richiesta.
+Potresti suddividere la funzione find_most_frequent_word in più funzioni?
+Ad esempio una che legge il file, una che calcola la parola, una che fa la free di tutta la hash table
+
+> Certamente! È una buona idea suddividere la funzione `find_most_frequent_word` in più funzioni più piccole per renderla più leggibile e modulare.
+> Ecco come possiamo scomporla:
+> 
+> ---
+> ### Funzioni Riorganizzate
+> 1. `read_words_from_file`: Legge il file, normalizza le parole e le inserisce nella hash table.
+> 2. `find_max_frequency_word`: Scansiona la hash table per trovare la parola con la frequenza massima.
+> 3. `free_hash_table_with_values`: Libera la memoria associata alla hash table, incluse le chiavi e i valori.
+> ---
+> ### Codice Aggiornato
+> ### Header: `word_count.h`
+> ```c
+> #ifndef WORD_COUNT_H
+> #define WORD_COUNT_H
+> 
+> #include "hash_table.h"
+> 
+> // Legge il file e popola la hash table con la frequenza delle parole
+> void read_words_from_file(const char* file_path, int min_length, HashTable* table);
+> 
+> // Trova la parola con la frequenza massima nella hash table
+> void find_max_frequency_word(HashTable* table, int min_length);
+> 
+> // Libera la memoria della hash table, incluse le chiavi e i valori
+> void free_hash_table_with_values(HashTable* table);
+> 
+> // Funzione principale
+> void find_most_frequent_word(const char* file_path, int min_length);
+> 
+> #endif // WORD_COUNT_H
+> ```
+> 
+> ### Sorgente: `word_count.c`
+> ```c
+> #include "word_count.h"
+> #include <stdio.h>
+> #include <stdlib.h>
+> #include <string.h>
+> #include <ctype.h>
+> 
+> // Funzione di hash per stringhe
+> unsigned long string_hash(const void* key) {
+>     const char* str = (const char*)key;
+>     unsigned long hash = 5381;
+>     int c;
+>     while ((c = *str++)) {
+>         hash = ((hash << 5) + hash) + c;
+>     }
+>     return hash;
+> }
+> 
+> // Funzione di confronto per stringhe
+> int string_compare(const void* a, const void* b) {
+>     return strcmp((const char*)a, (const char*)b) == 0;
+> }
+> 
+> // Funzione per normalizzare le parole (rimuove punteggiatura e mette in minuscolo)
+> char* normalize_word(const char* word) {
+>     int len = strlen(word);
+>     char* clean_word = (char*)malloc(len + 1);
+>     int j = 0;
+> 
+>     for (int i = 0; i < len; i++) {
+>         if (isalnum(word[i])) {
+>             clean_word[j++] = tolower(word[i]);
+>         }
+>     }
+>     clean_word[j] = '\0';
+>     return clean_word;
+> }
+> 
+> // Legge il file e popola la hash table
+> void read_words_from_file(const char* file_path, int min_length, HashTable* table) {
+>     FILE* file = fopen(file_path, "r");
+>     if (!file) {
+>         fprintf(stderr, "Errore: impossibile aprire il file.\n");
+>         exit(1);
+>     }
+> 
+>     char buffer[1024];
+>     while (fscanf(file, "%1023s", buffer) == 1) {
+>         char* word = normalize_word(buffer);
+>         if (strlen(word) >= min_length) {
+>             // Controlla se la parola è già nella tabella
+>             int* count = (int*)hash_table_get(table, word);
+>             if (count) {
+>                 (*count)++;
+>             } else {
+>                 int* new_count = (int*)malloc(sizeof(int));
+>                 *new_count = 1;
+>                 hash_table_put(table, strdup(word), new_count);
+>             }
+>         }
+>         free(word);
+>     }
+> 
+>     fclose(file);
+> }
+> 
+> // Trova la parola con la frequenza massima
+> void find_max_frequency_word(HashTable* table, int min_length) {
+>     void** keys = hash_table_keyset(table);
+>     int max_count = 0;
+>     char* most_frequent_word = NULL;
+> 
+>     for (int i = 0; i < hash_table_size(table); i++) {
+>         int* count = (int*)hash_table_get(table, keys[i]);
+>         if (*count > max_count) {
+>             max_count = *count;
+>             most_frequent_word = (char*)keys[i];
+>         }
+>     }
+> 
+>     if (most_frequent_word) {
+>         printf("La parola più frequente di lunghezza >= %d è: '%s' (ripetuta %d volte)\n",
+>                min_length, most_frequent_word, max_count);
+>     } else {
+>         printf("Nessuna parola trovata con lunghezza >= %d.\n", min_length);
+>     }
+> 
+>     free(keys);
+> }
+> 
+> // Libera la memoria della hash table, incluse chiavi e valori
+> void free_hash_table_with_values(HashTable* table) {
+>     void** keys = hash_table_keyset(table);
+>     for (int i = 0; i < hash_table_size(table); i++) {
+>         free(keys[i]); // Libera le chiavi duplicate
+>         free(hash_table_get(table, keys[i])); // Libera i conteggi
+>     }
+> ```
+> ---
+> ### Funzione principale
+> ```c
+> void find_most_frequent_word(const char* file_path, int min_length) {
+>     // Crea la hash table
+>     HashTable* table = hash_table_create(string_compare, string_hash);
+> 
+>     // Leggi il file e popola la hash table
+>     read_words_from_file(file_path, min_length, table);
+> 
+>     // Trova la parola più frequente
+>     find_max_frequency_word(table, min_length);
+> 
+>     // Libera la memoria
+>     free_hash_table_with_values(table);
+> }
+> ```
+> --- 
+> ### Cambiamenti Apportati
+> 1. `read_words_from_file`:
+>     - Legge il file e normalizza ogni parola
+>     - Inserisce ogni parola valida nella hash table e incrementa il conteggio.
+> 2. `find_max_frequency_word`:
+>     - Scansiona le parole nella hash table e trova quella con il conteggio massimo.
+> 3. `free_hash_table_with_values`:
+>     - Libera le chiavi duplicate (`strdup`) e i valori (conteggio) allocati dinamicamente.
+> 4. `find_most_frequent_word`:
+>     - Ora agisce come coordinatore, chiamando le altre funzioni.
+> ---
+> ### Vantaggi della modifica
+> 1. **Modularità**: Ogni funzione una responsabilità specifica.
+> 2. **Leggibilità**: Il codice è più chiaro e facile da mantenere.
+> 3. **Riutilizzabilità**: Le funzioni possono essere riutilizzate per altri scopi simili.
+> 
+> Se hai bisogno di ulteriori ottimizzazioni o test, fammi sapere!
+
+Il problema con l'implementazione che ci viene data è anche l'utilizzo della funzione `strdup`
+che può essere più conveniente creare in modo manuale per due principali motivi:
+1. `strdup` non è una funzione standard in C89/C90 e potrebbe non essere supportata su alcune piattaforme.
+2. Implementando una copia manuale della stringa, hai più controllo sulla gestione della memoria.
+
+# Input 9
+Puoi modificare il codice in modo da non usare strdup per favore?
