@@ -1,3 +1,6 @@
+#ifndef QUEUE_H
+#define QUEUE_H
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -18,3 +21,5 @@ void* dequeue(Queue* q);
 int is_queue_empty(Queue* q);
 
 void free_queue(Queue* q);
+
+#endif //QUEUE_H

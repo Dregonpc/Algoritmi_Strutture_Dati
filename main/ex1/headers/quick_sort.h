@@ -1,3 +1,6 @@
+#ifndef QUICK_SORT_H
+#define QUICK_SORT_H
+
 #include "compare.h"
 #include <stdlib.h>
 #include <string.h>
@@ -21,3 +24,5 @@ size_t partition(void *base, size_t size, size_t left, size_t right, int (*compa
  * @param compar It is the criterion according to which to sort the data (given two pointers to elements of the array, it returns a number greater than, equal to or less than zero if the first argument is respectively greater than, equal to or less than the second)
  */
 void quick_sort(void *base, size_t nitems, size_t size, int (*compar)(const void*, const void*));
+
+#endif //QUICK_SORT_H

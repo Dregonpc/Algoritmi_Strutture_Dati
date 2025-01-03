@@ -1,3 +1,6 @@
+#ifndef COMPARE_H
+#define COMPARE_H
+
 #include <string.h>
 
 /**
@@ -56,3 +59,5 @@ int compare_double(const void *a, const void *b);
  * @return 1 if a or b are null, 0 otherwise 
  */
 int is_null(const void *a, const void *b, int *check);
+
+#endif //COMPARE_H

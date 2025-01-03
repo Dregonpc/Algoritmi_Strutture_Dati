@@ -1,3 +1,6 @@
+#ifndef RECORD_H
+#define RECORD_H
+
 #include <stdlib.h>
 #include <string.h>
 
@@ -7,8 +10,6 @@ typedef struct {
     int field2;
     float field3;
 } Record;
-
-// make a mk_record?
 
 /**
  * @brief compare two records based on their fields, start from field1
@@ -45,3 +46,5 @@ int compare_records_int(const void *a, const void *b);
  * @return -1 if a < b, 0 if a = b, 1 if a > b
  */
 int compare_records_float(const void *a, const void *b);
+
+#endif //RECORD_H

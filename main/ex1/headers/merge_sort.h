@@ -1,3 +1,6 @@
+#ifndef MERGE_SORT_H
+#define MERGE_SORT_H
+
 #include "compare.h"
 #include <stdlib.h>
 #include <string.h>
@@ -20,3 +23,5 @@ void merge(void *base, size_t left_count, size_t right_count, size_t size, int (
  * @param compar It is the criterion according to which to sort the data (given two pointers to elements of the array, it returns a number greater than, equal to or less than zero if the first argument is respectively greater than, equal to or less than the second)
  */
 void merge_sort(void *base, size_t nitems, size_t size, int (*compar)(const void*, const void*));
+
+#endif //MERGE_SORT_H

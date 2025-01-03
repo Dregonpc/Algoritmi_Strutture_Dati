@@ -101,14 +101,14 @@ void sort_records(FILE *infile, FILE *outfile, size_t field, size_t algo) {
         merge_sort(records, num_records, sizeof(Record), compar);
         end = clock();
         float exTime = (float)((end - start)/CLOCKS_PER_SEC);
-        printf("Time of execution of merge sort in this case is %f seconds\n", exTime);
+        printf("Time of execution of merge sort in this case is %.*f seconds\n", 2, exTime);
     }
     else {
         start = clock();
         quick_sort(records, num_records, sizeof(Record), compar);
         end = clock();
         float exTime = (float)((end - start)/CLOCKS_PER_SEC);
-        printf("Time of execution of quick sort in this case is %f seconds\n", exTime);
+        printf("Time of execution of quick sort in this case is %.*f seconds\n", 2, exTime);
     }
 
     write_data(outfile, records, &num_records);

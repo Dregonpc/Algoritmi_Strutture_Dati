@@ -1,3 +1,6 @@
+#ifndef DISTANCE_H
+#define DISTANCE_H
+
 #include <string.h>
 #include <stdlib.h>
 
@@ -16,3 +19,5 @@ int edit_distance(const char *s1, const char* s2);
  * @return The minimum number of operations needed to trasform the string s2 into s1
  */
 int edit_distance_dyn(const char *s1, const char* s2);
+
+#endif //DISTANCE_H

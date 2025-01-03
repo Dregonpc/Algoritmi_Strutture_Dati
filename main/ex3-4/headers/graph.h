@@ -1,3 +1,6 @@
+#ifndef GRAPH_H
+#define GRAPH_H
+
 /**
  * @brief struct representing a graph
  * @param nodes Hash table for nodes
@@ -147,3 +150,4 @@ void* graph_get_label(const Graph gr, const void* node1, const void* node2);    
  */
 void graph_free(Graph gr);
 
+#endif //GRAPH_H
