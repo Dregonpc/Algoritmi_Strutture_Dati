@@ -16,15 +16,15 @@
 3. [Conclusioni](#conclusioni)
 
 ## Obiettivo
-In questo esercizio il nostro scopo è quello di creare una libreria generica che realizza la struttura dati *tavola hash (con concatenamento)* in grado di ospitare un insieme di coppie
+Lo scopo di questo esercizio è quello di creare una libreria generica che realizza la struttura dati *tavola hash (con concatenamento)* in grado di ospitare un insieme di coppie
 `{<chiave 1,valore 1>,...,<chiave n,valore n>}`, ovviamente deve essere una libreria il più possibile ottimizzata e deve seguire le regole di scrittura di un buon codice.
-Per la creazione però andremo ad utilizzare dei supporti basati su `Large Language Model (LLM)` come ad esempio ChatGPT.
+Per la creazione però, andremo ad utilizzare dei supporti basati su `Large Language Model (LLM)` come ad esempio ChatGPT.
 
 
 # Svolgimento
 
 ## Sviluppo della libreria
-Come primo approccio per la creazione della libreria da zero abbiamo deciso di utilizzare ChatGPT con il modello GPT-4o mini e per rendere la chat un ambiente ben strutturato sulla creazione di codice come input iniziale abbiamo utilizzato una frase di contesto in cui è specificato l’utilizzo del linguaggio C, la consegna dell’esercizio e come indicazione ulteriore le firme delle funzioni che dovrà andare a sviluppare.
+Per la creazione della libreria da zero abbiamo deciso di utilizzare ChatGPT con il modello GPT-4o mini e per iniziare la conversazione abbiamo specificato subito di voler realizzare un progetto in linguaggio C, spiegando la consegna dell'esercizio e riportando le firme delle funzioni che dovrà sviluppare, in modo da dargli più informazioni possibili e avere una risposta la più stutturata e attendibile possibile.
 
 ## Input 1
 Ciao, ho bisogno di una mano per un progetto di laboratorio di algoritmi e strutture dati in linguaggio C.
@@ -214,7 +214,7 @@ void hash_table_free(HashTable*);
 
 Il primo risultato ottenuto era **una semplice lista di funzioni separate tra loro**,
 senza considerare la necessità di un **file header** ne dell’effettiva consegna della creazione di una libreria,
-richieste che abbiamo introdotto con il secondo input
+richieste che abbiamo introdotto con il secondo input.
 
 ## Input 2
 Puoi suddividere il codice in un file header (.h) e in un file .c per favore?
@@ -477,8 +477,8 @@ Nel terzo output infatti è stato aggiunto un nuovo parametro all’interno dell
 
 ## Input 4
 Come quarto input gli abbiamo specificato di rimodulare il codice adattandolo alla nostra funzione di compare,
-che è quella utilizzata anche sui test messi a disposizione su moodle con code runner,
-ritorna 1 se i due elementi sono uguali, 0 altrimenti:
+basandoci su quella utilizzata nei test messi a disposizione su moodle con code runner,
+in cui ritorna 1 se i due elementi sono uguali, 0 altrimenti:
 
 Come funzione di compare utilizzerò una funzione che ritorna 1 se i due elementi sono uguali, 0 se sono diversi.
 Riadatta il codice in base a questa funzione
@@ -525,11 +525,10 @@ Le modifiche effettuate sono state nell’ utilizzo di table->compare_keys(curre
 Successivamente siamo passati alla parte di Unit Testing con la richiesta di 15 test per verificare la funzionalità della libreria, specificando espressamente l’utilizzo della libreria Unity.
 
 ## Input 5
-Successivamente siamo passati alla parte di Unit Testing con la richiesta di 15 test per verificare la funzionalità della libreria,
-specificando espressamente l’utilizzo della libreria Unity: 
+Crea 15 Unit Test per testare questo codice, la libreria Unity è già stata implementata.
 
 ## Output 5
-> Ecco 20 unit test per verificare il corretto funzionamento della tabella hash implementata,
+> Ecco 15 unit test per verificare il corretto funzionamento della tabella hash implementata,
 > utilizzando la libreria Unity. Questi test coprono i principali casi d'uso
 > e includono anche situazioni limite per verificare la robustezza della struttura dati.
 > ```c
@@ -748,7 +747,7 @@ specificando espressamente l’utilizzo della libreria Unity:
 
 Una volta eseguiti i test e verificato la funzionalità della libreria nei vari contesti di utilizzo, 
 abbiamo deciso di iniziare a sviluppare l'applicazione di essa che ha il compito di
-leggere in input un testo e restituire all'utente le parole più frequenti presenti nel testo data una lunghezza mininima di caratteri
+leggere in input un testo e restituire all'utente le parole più frequenti presenti nel testo, data una lunghezza mininima di caratteri.
 
 ## Sviluppo dell'applicazione
 
@@ -1010,7 +1009,7 @@ Esempio di avvio del file: <br>
 >Fammi sapere se serve altro!
 
 Il principale problema di questo risultato è la presenza di poche funzioni,
-quindi in caso di riutilizzo del codice e della manutenzione molto scomodo e disorganizzato
+quindi in caso di riutilizzo del codice e della manutenzione risulta molto scomodo e disorganizzato.
 
 ## Input 8 
 Perfetto, ho ancora una richiesta.
@@ -1238,8 +1237,8 @@ Puoi modificare il codice in modo da non usare strdup per favore?
 >Ora il codice è completamente indipendente da strdup e mantiene un'allocazione chiara e controllata delle stringhe.
 >Fammi sapere se hai bisogno di ulteriori modifiche o chiarimenti!
 
-Nella fase di testing del codice dopo l'implementazione del nono output abbiamo notato che venivano restittuite parole non corrette,
-quindi abbiamo notato leggendo il testo dato in input che parole che contenvano caratteri non alfanumerici non venivano eliminati ne utilizzati come divisori
+Nella fase di testing del codice dopo l'implementazione del nono output venivano restituite parole non corrette,
+quindi abbiamo notato leggendo il testo dato in input che parole che contenvano caratteri non alfanumerici non venivano eliminate ne utilizzate come divisori
 per le singole parole.
 
 ## Input 10
@@ -1318,6 +1317,8 @@ In modo che se una parola è suddivisa tramite un qualunque carattere, dopo veng
 >
 >Se hai bisogno di ulteriori modifiche o chiarimenti, sono qui! 😊
 
----
+Dopo questo output, il codice è risultato completamente corretto e funzionante, provandolo sia con i test in locale che con i test su moodle. Quindi la conversazione con ChatGPT è finita qui.
 
 # Conclusioni
+Con questo esercizio abbiamo notato che ChatGPT risulta molto potente per scrivere del codice di progetti piccoli, la cosa più importante è specificargli bene cosa si vuole fare e cosa si vuole ottenere, perchè più informazioni gli si danno, più risponde accuratamente. Infatti con 10 semplici input, siamo riusciti ad implementare una libreria funzionante e testata.
+Ovviamente però anche lui riscontra diversi problemi, abbiamo notato che più si porta avanti la conversazione e più inizia a ripetersi, senza modificare effettivamente il codice o risolvendo i problemi.
