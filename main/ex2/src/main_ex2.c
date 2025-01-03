@@ -71,7 +71,7 @@ Words* read_dictionary(const char *filename, size_t* num_words_dictionary) {
     count++;
 
     if (count >= capacity) {
-      capacity *= 1.5;
+      capacity *= 2;
       dictionary = realloc(dictionary, capacity * sizeof(Words));
       if (dictionary == NULL) {
         printf("Reallocation memory error.\n");
@@ -121,7 +121,7 @@ Words* read_text(const char *filename, size_t* num_words_text) {
     }
 
     if (count >= capacity) {
-      capacity *= 1.5;
+      capacity *= 2;
       text = realloc(text, capacity * sizeof(Words));
       if (text == NULL) {
         printf("Reallocation memory error.\n");
@@ -180,7 +180,7 @@ void find_min_edit_distance(Words *dictionary, Words *text, size_t num_words_dic
 
 int main(int argc, char *argv[]) {
   if (argc != 3) {
-    printf("Error, to start:\nmain_ex2.c (Path of the dictionary file) (Path of the file to correct)");
+    printf("Error, to start:\nmain_ex2.c (Path of the dictionary file) (Path of the file to correct)\n");
     exit(EXIT_FAILURE);
   }
 
