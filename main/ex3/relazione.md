@@ -12,6 +12,7 @@
     - [Input 7](#input-7)
     - [Input 8](#input-8)
     - [Input 9](#input-9)
+    - [Input 10](#input-10)
 3. [Conclusioni](#conclusioni)
 
 ## Obiettivo
@@ -1188,5 +1189,135 @@ che può essere più conveniente creare in modo manuale per due principali motiv
 1. `strdup` non è una funzione standard in C89/C90 e potrebbe non essere supportata su alcune piattaforme.
 2. Implementando una copia manuale della stringa, hai più controllo sulla gestione della memoria.
 
-# Input 9
+## Input 9
 Puoi modificare il codice in modo da non usare strdup per favore?
+
+## Output 9 
+>Certo! Se vuoi evitare l'uso di strdup (che alloca dinamicamente una copia della stringa),
+>possiamo modificare il codice in modo da allocare e gestire manualmente le stringhe. Questo significa che la gestione della memoria delle chiavi
+>deve essere più esplicita, e ci assicureremo che tutte le stringhe siano allocate correttamente solo una volta.
+>
+>---
+>### Soluzione
+> - Al posto di `strdup`, faremo una copia esplicita della stringa utilizzando malloc e strcpy.
+> - Ci assicureremo che ogni chiave sia allocata solo quando viene inserita nella hash table.
+>--- 
+>### Cambiamenti Apportati
+>1. **Rimozione di `strdup`**:
+>Sostituita con una funzione esplicita `manual_strdup`
+>che alloca e copia manualmente una stringa usando `malloc` e `strcpy`.
+>
+>```c
+>char* manual_strdup(const char* str) {
+>    int len = strlen(str) + 1;
+>    char* copy = (char*)malloc(len);
+>    if (copy) {
+>        strcpy(copy, str);
+>    }
+>    return copy;
+>}
+>```
+>
+>2. **Chiamata a `manual_strdup`**:
+>Durante l'inserimento delle chiavi nella hash table,
+>la funzione `manual_strdup` viene utilizzata per creare una copia della stringa normalizzata.
+>3. **Libera Manuale delle Chiavi**:
+>Nella funzione `free_hash_table_with_values`,
+>liberiamo esplicitamente le chiavi e i valori allocati.
+>```c
+>void free_hash_table_with_values(HashTable* table) {
+>    void** keys = hash_table_keyset(table);
+>    for (int i = 0; i < hash_table_size(table); i++) {
+>        free(keys[i]); // Libera le chiavi allocate manualmente
+>        free(hash_table_get(table, keys[i])); // Libera i conteggi
+>    }
+>    free(keys);
+>    hash_table_free(table);
+>}
+>```
+>Ora il codice è completamente indipendente da strdup e mantiene un'allocazione chiara e controllata delle stringhe.
+>Fammi sapere se hai bisogno di ulteriori modifiche o chiarimenti!
+
+Nella fase di testing del codice dopo l'implementazione del nono output abbiamo notato che venivano restittuite parole non corrette,
+quindi abbiamo notato leggendo il testo dato in input che parole che contenvano caratteri non alfanumerici non venivano eliminati ne utilizzati come divisori
+per le singole parole.
+
+## Input 10
+Dobbiamo modificare la funzione che normalizza la parola, deve diventare il più generica possibile.
+In modo che se una parola è suddivisa tramite un qualunque carattere, dopo venga divisa in due parole
+
+## Output 10
+>Perfetto! Se dobbiamo dividere la parola ogni volta che incontriamo un carattere non alfanumerico e trattare entrambe le parti come parole separate, possiamo aggiornare la funzione normalize_word e il codice di lettura.
+>
+>L'idea è:
+>1. **Dividere la parola in sottostringhe**: Ogni sottostringa è una sequenza alfanumerica separata da un trattino.
+>2. **Inserire ogni sottostringa nella hash table** come una parola separata.
+>
+>Per rendere la funzione più generica e gestire qualunque carattere non alfanumerico come delimitatore per dividere le parole,
+>possiamo creare una nuova funzione `process_and_split_word`.
+>Verificheremo se il carattere corrente non è alfanumerico (`isalnum`) e lo useremo come delimitatore.
+>
+>---
+>### Soluzione Completa
+>**Nuova Funzione `process_and_split_word`**
+>Questa funzione:
+>- Riceve una stringa contenente potenzialmente caratteri non alfanumerici.
+>- Divide la stringa in sottostringhe usando qualsiasi carattere non alfanumerico come delimitatore.
+>- Normalizza ogni sottostringa.
+>- Inserisce ogni sottostringa nella hash table.
+>
+>---
+>
+>### Codice Aggiornato
+>Questa nuova funzione sostituisce la logica precedente per `normalize_word`
+>e aggiunge la gestione dei caratteri non alfanumerici.
+>
+>```c
+>void process_and_split_word(const char* input_word, int min_length, HashTable* table) {
+>    int len = strlen(input_word);
+>    char buffer[1024]; // Buffer per ogni sottostringa
+>    int j = 0;
+>
+>    for (int i = 0; i <= len; i++) { // Include il terminatore null '\0'
+>        if (!isalnum(input_word[i]) || input_word[i] == '\0') { // Delimitatore trovato
+>            if (j > 0) { // Se il buffer contiene una parola valida
+>                buffer[j] = '\0'; // Termina la sottostringa
+>                char* normalized_word = normalize_word(buffer);
+>                if (strlen(normalized_word) >= min_length) {
+>                    // Inserisce la parola nella hash table
+>                    int* count = (int*)hash_table_get(table, normalized_word);
+>                    if (count) {
+>                        (*count)++;
+>                    } else {
+>                        char* key_copy = manual_strdup(normalized_word);
+>                        int* new_count = (int*)malloc(sizeof(int));
+>                        *new_count = 1;
+>                        hash_table_put(table, key_copy, new_count);
+>                    }
+>                }
+>                free(normalized_word);
+>                j = 0; // Resetta il buffer
+>            }
+>        } else {
+>            buffer[j++] = tolower(input_word[i]); // Copia carattere alfanumerico in minuscolo
+>        }
+>    }
+>}
+>```
+>### Come funziona la funzione
+>1. La funzione scansiona la stringa carattere per carattere.
+>2. Ogni volta che incontra un carattere non alfanumerico o la fine della stringa (`'\0'`):
+>    - Termina la sottostringa nel buffer.
+>    - La sottostringa viene normalizzata e controllata per la lunghezza minima.
+>    - Viene inserita nella hash table.
+>3. I caratteri alfanumerici vengono copiati nel buffer e convertiti in minuscolo.
+>
+>### Conclusione
+>Questa modifica rende la funzione generica e robusta,
+>in grado di dividere una parola in più sottostringhe utilizzando qualsiasi carattere non alfanumerico come delimitatore.
+>
+>Se hai bisogno di ulteriori modifiche o chiarimenti, sono qui! 😊
+
+---
+
+# Conclusioni
