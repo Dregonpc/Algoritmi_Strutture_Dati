@@ -35,10 +35,13 @@ void load_graph_from_csv(Graph gr, const char* filename) {
       continue;
 
     //float distance = atof(distance_str);
+    char* place1_copy = strdup(place1);
+    char* place2_copy = strdup(place2);
+    char* distance_copy = strdup(distance_str);
 
-    graph_add_node(gr, strdup(place1));
-    graph_add_node(gr, strdup(place2));
-    graph_add_edge(gr, place1, place2, strdup(distance_str));
+    graph_add_node(gr, place1_copy);
+    graph_add_node(gr, place2_copy);
+    graph_add_edge(gr, place1_copy, place2_copy, distance_copy);
   }
 
   fclose(file);
@@ -107,9 +110,8 @@ void write_to_file(Graph gr, void** visited, char* outFile) {
 
   int num_nodes = graph_num_nodes(gr);
   for (int i = 0; i < num_nodes; i++) {
-    if (visited[i] == NULL) 
-      break;
-    fprintf(file, "%s\n", (char*)visited[i]);
+    if (visited[i] != NULL && strlen((char*)visited[i]) > 0) 
+      fprintf(file, "%s\n", (char*)visited[i]);
   }
 
   fclose(file);
@@ -138,10 +140,9 @@ int main(int argc, char* argv[]) {
   }
   else {
     write_to_file(gr, visited, writeFile);
-    free(visited);
   }
 
   graph_free(gr);
 
-  return 1;
+  return 0;
 }
