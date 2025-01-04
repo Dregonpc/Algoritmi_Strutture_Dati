@@ -1311,14 +1311,18 @@ In modo che se una parola è suddivisa tramite un qualunque carattere, dopo veng
 >    - Viene inserita nella hash table.
 >3. I caratteri alfanumerici vengono copiati nel buffer e convertiti in minuscolo.
 >
+>---
+>
 >### Conclusione
 >Questa modifica rende la funzione generica e robusta,
 >in grado di dividere una parola in più sottostringhe utilizzando qualsiasi carattere non alfanumerico come delimitatore.
 >
 >Se hai bisogno di ulteriori modifiche o chiarimenti, sono qui! 😊
 
-Dopo questo output, il codice è risultato completamente corretto e funzionante, provandolo sia con i test in locale che con i test su moodle. Quindi la conversazione con ChatGPT è finita qui.
+Questo output è stato l'ultimo. Il codice che ci e stato generato risulta funzionante tramite test e l'applicazione restituisce i risultati che ci aspettavamo.<br>
+La conversazione con ChatGPT è finita qui.
 
 # Conclusioni
-Con questo esercizio abbiamo notato che ChatGPT risulta molto potente per scrivere del codice di progetti piccoli, la cosa più importante è specificargli bene cosa si vuole fare e cosa si vuole ottenere, perchè più informazioni gli si danno, più risponde accuratamente. Infatti con 10 semplici input, siamo riusciti ad implementare una libreria funzionante e testata.
-Ovviamente però anche lui riscontra diversi problemi, abbiamo notato che più si porta avanti la conversazione e più inizia a ripetersi, senza modificare effettivamente il codice o risolvendo i problemi.
+Lo scopo di questo esercizio come scritto in consegna era quello della creazione di una libreria interfacciandosi con LLM che ci aiutassero nella scrittura di codice, questo ci ha permesso di comprendere che questi strumenti,
+nel nostro caso ChatGPT, sono molto complessi e avanzati che possono supportare gli sviluppatori nello sviluppo di progetti e applicazioni vere e proprie, infatti con 10 semplici input siamo riusciti a implementare una libreria funzionante e testata.<br>
+Con la nostra esperienza abbiamo notato che più si protrae la conversazione più ChatGPT tende a ripetersi senza apportare modifiche significative al codice e senza risolvere i problemi che gli vengono indicati.
