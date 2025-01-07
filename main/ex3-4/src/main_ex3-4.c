@@ -19,6 +19,18 @@ int string_compare(const void* a, const void* b) {
   return strcmp((const char*)a, (const char*)b) == 0;
 }
 
+void clear_city (char *city) {
+  if (city != NULL) {
+    int i = 0;
+    while (city[i] != '\0') {
+      if (city[i] == '_') {
+        city[i] = ' ';
+      }
+      i++;
+    }
+  }
+}
+
 void load_graph_from_csv(Graph gr, const char* filename) {
   FILE* file = fopen(filename, "r");
   if (!file) {
@@ -129,6 +141,8 @@ int main(int argc, char* argv[]) {
   char* readFile = argv[1];
   char* city = argv[2];
   char* writeFile = argv[3];
+
+  clear_city(city);
 
   Graph gr = graph_create(1, 0, string_compare, string_hash);
   load_graph_from_csv(gr, readFile);
