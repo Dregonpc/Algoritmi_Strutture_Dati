@@ -1323,6 +1323,6 @@ Questo output è stato l'ultimo. Il codice che ci e stato generato risulta funzi
 La conversazione con ChatGPT è finita qui.
 
 # Conclusioni
-Lo scopo di questo esercizio come scritto in consegna era quello della creazione di una libreria interfacciandosi con LLM che ci aiutassero nella scrittura di codice, questo ci ha permesso di comprendere che questi strumenti,
-nel nostro caso ChatGPT, sono molto complessi e avanzati che possono supportare gli sviluppatori nello sviluppo di progetti e applicazioni vere e proprie, infatti con 10 semplici input siamo riusciti a implementare una libreria funzionante e testata.<br>
-Con la nostra esperienza abbiamo notato che più si protrae la conversazione più ChatGPT tende a ripetersi senza apportare modifiche significative al codice e senza risolvere i problemi che gli vengono indicati.
+Lo scopo di questo esercizio come scritto in consegna era quello della creazione di una libreria interfacciandosi con LLM che ci aiutassero nella scrittura di codice. Questo ci ha permesso di comprendere che: questi strumenti,
+nel nostro caso ChatGPT, sono molto complessi e avanzati e che possono dare un ottimo supporto ai programmatori nello sviluppo di progetti e applicazioni vere e proprie. Infatti con 10 semplici input siamo riusciti a implementare una libreria funzionante e testata.<br>
+Tuttavia con la nostra esperienza abbiamo notato che più si protrae la conversazione più ChatGPT tende a ripetersi senza apportare modifiche significative al codice e senza risolvere i problemi che gli vengono indicati.
