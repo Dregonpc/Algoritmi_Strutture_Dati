@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <ctype.h>
 #include "../headers/queue.h"
 #include "../headers/hash_table.h"
 #include "../headers/graph.h"
@@ -25,6 +26,8 @@ void clear_city (char *city) {
     while (city[i] != '\0') {
       if (city[i] == '_') {
         city[i] = ' ';
+      }else {
+        city[i] = tolower(city[i]);
       }
       i++;
     }
