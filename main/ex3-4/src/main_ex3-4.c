@@ -20,15 +20,11 @@ int string_compare(const void* a, const void* b) {
   return strcmp((const char*)a, (const char*)b) == 0;
 }
 
-void clear_city (char *city) {
-  if (city != NULL) {
+void to_lower_string (char *string) {
+  if (string != NULL) {
     int i = 0;
-    while (city[i] != '\0') {
-      if (city[i] == '_') {
-        city[i] = ' ';
-      }else {
-        city[i] = tolower(city[i]);
-      }
+    while (string[i] != '\0') {
+      string[i] = tolower(string[i]);
       i++;
     }
   }
@@ -145,7 +141,7 @@ int main(int argc, char* argv[]) {
   char* city = argv[2];
   char* writeFile = argv[3];
 
-  clear_city(city);
+  to_lower_string(city);
 
   Graph gr = graph_create(1, 0, string_compare, string_hash);
   load_graph_from_csv(gr, readFile);
