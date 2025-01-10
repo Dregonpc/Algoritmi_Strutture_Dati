@@ -2,8 +2,8 @@
 
 ## Indice
 1. [Scelta implentativa](#scelta-implementativa)
-1. [Problema della mancanza di un contesto](#problema-della-mancanza-di-un-contesto)
-1. [Tempi di esecuzione](#tempi-di-esecuzione)
+2. [Problema della mancanza di un contesto](#problema-della-mancanza-di-un-contesto)
+3. [Tempi di esecuzione](#tempi-di-esecuzione)
 
 ## Scelta implementativa
 Abbiamo deciso che per ogni parola del testo da correggere, venissero stampate a schermo 5 parole con la distanza minima, anche per le parole corrette (in cui quindi la parola con la distanza minima era se stessa). Questo porta sicuramente ad uno spreco di risorse, ma abbiamo deciso di farlo per far visualizzare la correttezza dell'algoritmo.
