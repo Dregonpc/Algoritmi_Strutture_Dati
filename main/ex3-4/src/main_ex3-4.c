@@ -30,13 +30,14 @@ void to_lower_string (char *string) {
   }
 }
 
-void load_graph_from_csv(Graph gr, const char* filename) {
+void load_graph_from_csv(Graph gr, const char* filename, char*** arrayDup, size_t* len) {
   FILE* file = fopen(filename, "r");
   if (!file) {
     printf("Error opening file (input file).\n");
     exit(EXIT_FAILURE);
   }
 
+  size_t i = 0;
   char line[1024];
   while (fgets(line, sizeof(line), file)) {
     char* place1 = strtok(line, ",");
@@ -45,17 +46,40 @@ void load_graph_from_csv(Graph gr, const char* filename) {
     if (!place1 || !place2 || !distance_str)
       continue;
 
-    //float distance = atof(distance_str);
     char* place1_copy = strdup(place1);
     char* place2_copy = strdup(place2);
     char* distance_copy = strdup(distance_str);
 
+    if (*len <= i + 3) {
+      *len *= 2;
+      *arrayDup = (char**)realloc(*arrayDup, *len * sizeof(char*));
+      if (!*arrayDup) {
+        printf("Error allocation memory!\n");
+        fclose(file);
+        exit(EXIT_FAILURE);
+      }
+    }
+
+    (*arrayDup)[i] = place1_copy;
+    (*arrayDup)[i+1] = place2_copy;
+    (*arrayDup)[i+2] = distance_copy;
+
     graph_add_node(gr, place1_copy);
     graph_add_node(gr, place2_copy);
     graph_add_edge(gr, place1_copy, place2_copy, distance_copy);
+
+    i += 3;
   }
 
   fclose(file);
+}
+
+void free_strDup(char **arrayDup, size_t len) {
+  for (size_t i = 0; i < len; i++) {
+    free(arrayDup[i]);
+    arrayDup[i] = NULL;
+  }
+  free(arrayDup);
 }
 
 /**
@@ -144,7 +168,15 @@ int main(int argc, char* argv[]) {
   to_lower_string(city);
 
   Graph gr = graph_create(1, 0, string_compare, string_hash);
-  load_graph_from_csv(gr, readFile);
+
+  size_t len = 3;
+  char** arrayDup = (char**)malloc(len * sizeof(char*));
+  if (!arrayDup) {
+    printf("Error allocation memory!\n");
+    exit(EXIT_FAILURE);
+  }
+
+  load_graph_from_csv(gr, readFile, &arrayDup, &len);
 
   void** visited = breadth_first_visit(gr, city, string_compare, string_hash);
 
@@ -156,6 +188,7 @@ int main(int argc, char* argv[]) {
   }
 
   graph_free(gr);
+  free_strDup(arrayDup,len);
 
   return 0;
 }
