@@ -1,3 +1,7 @@
+# Studenti : 
+- **Davide Trapani**
+- **Matteo Saracino**
+
 # Laboratorio per il corso di Algoritmi e Strutture Dati: regole d'esame, indicazioni generali e suggerimenti, consegne per gli esercizi
 
 # Regole d'esame

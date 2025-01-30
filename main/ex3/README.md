@@ -1,4 +1,7 @@
-# Relazione 
+# Relazione esercizio 3 - Tavole hash (con concatenamento)
+## Studenti : 
+- **Davide Trapani**
+- **Matteo Saracino**
 
 ## Indice
 1. [Introduzione / Obiettivo](#obiettivo)

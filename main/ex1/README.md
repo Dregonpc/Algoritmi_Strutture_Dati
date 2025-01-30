@@ -1,4 +1,7 @@
 # Relazione esercizio 1 - Merge Sort e Quick Sort
+## Studenti : 
+- **Davide Trapani**
+- **Matteo Saracino**
 
 ## Indice
 1. [Tabella dei tempi](#tabella-dei-tempi-registrati)

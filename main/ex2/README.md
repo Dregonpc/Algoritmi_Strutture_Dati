@@ -1,4 +1,7 @@
 # Relazione esercizio 2 - Edit distance
+## Studenti : 
+- **Davide Trapani**
+- **Matteo Saracino**
 
 ## Indice
 1. [Scelta implentativa](#scelta-implementativa)

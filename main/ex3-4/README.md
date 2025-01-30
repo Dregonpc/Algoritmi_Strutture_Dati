@@ -1,4 +1,7 @@
 # Esercizio 3-4 - Grafi sparsi e Visita in Ampiezza
+## Studenti : 
+- **Davide Trapani**
+- **Matteo Saracino**
 
 ## Table of Contents
 1. [Scelta implentativa](#scelta-implementativa)
